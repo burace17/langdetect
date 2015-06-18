@@ -1,0 +1,20 @@
+cmake_minimum_required (VERSION 2.6)
+project (glangdetect)
+if (WIN32)
+
+else()
+	include (FindPkgConfig)
+	pkg_search_module (GTK REQUIRED gtk+-2.0)
+	add_definitions (-DGTK_UI)
+	include_directories (${GTK_INCLUDE_DIRS})
+endif()
+
+include_directories(./include)
+set (HEADER_FILES include/gui.h include/langdetect.h)
+add_executable (langdetect src/main.c src/langdetect.c src/gui.c ${HEADER_FILES})
+
+if (WIN32)
+	target_link_libraries (langdetect m)
+else()
+	target_link_libraries (langdetect m ${GTK_LDFLAGS})
+endif()
