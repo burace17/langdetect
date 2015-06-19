@@ -8,24 +8,6 @@ GtkWidget* input;
 GtkWidget* window;
 #endif
 
-void create_window(int argc, char* argv[]) {
-#ifdef _WIN32
-	win32_create_window();
-#endif
-
-#ifdef GTK_UI
-	_gtk_create_window(argc, argv);
-#endif
-
-#ifdef __APPLE__
-	// Cocoa must be initialized with the objective c compiler, so we jump to objc code here.
-	objc_main(argc, argv);
-#endif
-
-#ifdef QT_UI
-	qt_create_window();
-#endif
-}
 
 void display_dialog(char output[]) {
 #ifdef GTK_UI
@@ -212,3 +194,22 @@ void win32_create_window() {
 
 }
 #endif
+
+void create_window(int argc, char* argv[]) {
+#ifdef _WIN32
+	win32_create_window();
+#endif
+
+#ifdef GTK_UI
+	_gtk_create_window(argc, argv);
+#endif
+
+#ifdef __APPLE__
+	// Cocoa must be initialized with the objective c compiler, so we jump to objc code here.
+	objc_main(argc, argv);
+#endif
+
+#ifdef QT_UI
+	qt_create_window();
+#endif
+}
