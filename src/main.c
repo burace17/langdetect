@@ -9,4 +9,5 @@
 int main(int argc, char* argv[]) {
 	// Create window
 	create_window(argc, argv);
+	return 0;
 }
