@@ -7,7 +7,7 @@ elseif (APPLE)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/osx/init_osx.m
 		src/osx/gui_osx.m)
 	set (HEADER_FILES include/gui.h include/langdetect.h include/osx/init_osx.h include/osx/gui_osx.h)
-	set (IB_FILES osx/MainMenu.xib)
+	set (IB_FILES osx/MainMenu.nib)
 	set (OSX_BUNDLE MACOSX_BUNDLE)
 
 	set (CMAKE_C_FLAGS "-x objective-c")
