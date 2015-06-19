@@ -206,7 +206,9 @@ void create_window(int argc, char* argv[]) {
 
 #ifdef __APPLE__
 	// Cocoa must be initialized with the objective c compiler, so we jump to objc code here.
-	objc_main(argc, argv);
+	// This gets rid of a warning from clang
+	const char* cargv = (const char*)argv;
+	objc_main(argc, &cargv);
 #endif
 
 #ifdef QT_UI
