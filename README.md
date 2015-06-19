@@ -17,11 +17,13 @@ operating systems apart from OS X, GTK+ 2 and pkg-config are required. I may add
 How to build
 ------------
 from the root of the repository:
+
 	mkdir build && cd build
 	cmake ..
 	cmake --build .
 
 however, for Mac OS X you must do:
+
 	mkdir build && cd build
 	cmake -GXcode ..
 	cmake --build .
