@@ -9,9 +9,7 @@ int get_occurances(char* input[], int numWords, const char* filename) {
 
 	if (file == NULL) {
 		char error[1024];
-		char cwd[1024];
-		getcwd(cwd, sizeof(cwd));
-		sprintf(error, "Could not open file: %d\nCWD: %s", errno, cwd);
+		sprintf(error, "Could not open file: %d", errno);
 		display_dialog(error);		
 		return 0;
 	}
