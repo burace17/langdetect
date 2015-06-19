@@ -45,7 +45,7 @@ int get_occurances(char* input[], int numWords, const char* filename) {
 	return occurances;
 }
 
-void detect_language(char text[]) {
+void detect_language(const char text[]) {
 	char* pch;
 	char* inputWords[BUFSIZ];
 	char output[1024];

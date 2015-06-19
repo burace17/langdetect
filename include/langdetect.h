@@ -5,5 +5,5 @@
 #include <math.h>
 #include <string.h>
 
-void detect_language(char text[]);
+void detect_language(const char text[]);
 #endif

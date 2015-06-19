@@ -11,6 +11,7 @@
 
 #ifdef __APPLE__
 #include "osx/init_osx.h"
+#include "osx/gui_osx.h"
 #endif
 
 #include "langdetect.h"

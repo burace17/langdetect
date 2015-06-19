@@ -1,2 +1,2 @@
 #import <Cocoa/Cocoa.h>
-int objc_main(int argc, char* argv[]);
+int objc_main(int argc, char* const argv[]);

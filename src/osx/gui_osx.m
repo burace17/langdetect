@@ -5,8 +5,8 @@
 
 -(IBAction)objc_detectLanguage:(id)sender {
 	// Jump back to C code
-	NSString *text = [input stringValue];
-	detect_language([text UTF8String]);
+	const char* text = [[input stringValue] UTF8String];
+	detect_language(text);
 }
 
 @end
