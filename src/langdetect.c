@@ -14,10 +14,10 @@ void detect_language(char text[]) {
 		pch = strtok(NULL, " ");	
 	}
 
-	matchedEn = get_occurances(inputWords, numWords, "../dict/en.dic");
-	matchedEs = get_occurances(inputWords, numWords, "../dict/es.dic");
-	matchedFr = get_occurances(inputWords, numWords, "../dict/fr.dic");
-	matchedDe = get_occurances(inputWords, numWords, "../dict/de.dic");
+	matchedEn = get_occurances(inputWords, numWords, "./en.dic");
+	matchedEs = get_occurances(inputWords, numWords, "./es.dic");
+	matchedFr = get_occurances(inputWords, numWords, "./fr.dic");
+	matchedDe = get_occurances(inputWords, numWords, "./de.dic");
 
 	sprintf(output, "English: %d/%d (%g%%)\n Spanish: %d/%d (%g%%)\n French: %d/%d (%g%%)\n German: %d/%d (%g%%)\n",
 			matchedEn, numWords, floor((matchedEn/(double)numWords)* 100),

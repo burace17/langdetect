@@ -7,7 +7,7 @@ elseif (APPLE)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/init_osx.m
 		src/gui_osx.m)
 	set (HEADER_FILES include/gui.h include/langdetect.h include/init_osx.h include/gui_osx.h)
-	set (IB_FILES interfacebuilder/MainMenu.xib)
+	set (IB_FILES osx/MainMenu.xib)
 	set (OSX_BUNDLE MACOSX_BUNDLE)
 
 	set (CMAKE_C_FLAGS "-x objective-c")
@@ -22,11 +22,15 @@ else()
 endif()
 
 include_directories(./include)
-add_executable (langdetect ${OSX_BUNDLE} ${SRC_FILES} ${HEADER_FILES} ${IB_FILES})
+add_executable (langdetect ${OSX_BUNDLE} ${SRC_FILES} ${HEADER_FILES} ${IB_FILES} dict/en.dic dict/es.dic dict/fr.dic dict/de.dic)
 
 if (APPLE)
-set_source_files_properties (${IB_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-set_target_properties (langdetect PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/interfacebuilder/Info.plist)
+	set_source_files_properties (${IB_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+	set_source_files_properties (dict/en.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+	set_source_files_properties (dict/es.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+	set_source_files_properties (dict/fr.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+	set_source_files_properties (dict/de.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+	set_target_properties (langdetect PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/osx/Info.plist)
 endif()
 
 if (WIN32)

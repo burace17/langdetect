@@ -5,7 +5,7 @@ int objc_main(int argc, char* argv[]) {
 	// root. This allows fopen() to find the dictionaries 
 	// TODO: Alow user to specify custom dictionary location
 	NSString *appPath = [[NSBundle mainBundle] bundlePath];
-	chdir([[appPath stringByAppendingString:@"/Contents/MacOS"] UTF8String]);	
+	chdir([[appPath stringByAppendingString:@"/Contents/Resources"] UTF8String]);	
 
 	return NSApplicationMain(argc, argv);
 }
