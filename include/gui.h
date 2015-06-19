@@ -8,7 +8,7 @@
 #endif
 
 #ifdef __APPLE__
-#include "init_osx.h"
+#include "osx/init_osx.h"
 #endif
 
 void create_window(int argc, char* argv[]);

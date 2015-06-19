@@ -4,9 +4,9 @@ if (WIN32)
 	set (HEADER_FILES include/gui.h include/langdetect.h)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c)
 elseif (APPLE)
-	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/init_osx.m
-		src/gui_osx.m)
-	set (HEADER_FILES include/gui.h include/langdetect.h include/init_osx.h include/gui_osx.h)
+	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/osx/init_osx.m
+		src/osx/gui_osx.m)
+	set (HEADER_FILES include/gui.h include/langdetect.h include/osx/init_osx.h include/osx/gui_osx.h)
 	set (IB_FILES osx/MainMenu.xib)
 	set (OSX_BUNDLE MACOSX_BUNDLE)
 
@@ -40,9 +40,6 @@ elseif(NOT APPLE)
 endif()
 
 if (NOT APPLE)
-	#	add_custom_command (TARGET langdetect POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/dict/en.dic" 
-	#										$<TARGET_FILE_DIR:langdetect>)
-
 	file (GLOB DICTIONARIES "${PROJECT_SOURCE_DIR}/dict/*.dic")
 	file (COPY ${DICTIONARIES} DESTINATION .)
 endif()
