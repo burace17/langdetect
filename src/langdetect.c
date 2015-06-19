@@ -46,13 +46,14 @@ int get_occurances(char* input[], int numWords, const char* filename) {
 }
 
 void detect_language(const char text[]) {
+	char* t = (char*)text;
 	char* pch;
 	char* inputWords[BUFSIZ];
 	char output[1024];
 	int numWords = 0;
 	int matchedEn, matchedEs, matchedFr, matchedDe;
 
-	pch = strtok(text, " ");
+	pch = strtok(t, " ");
 	while (pch != NULL) {
 		inputWords[numWords] = pch;
 		numWords++;
