@@ -1,32 +1,5 @@
 #include "langdetect.h"
 #include <errno.h>
-void detect_language(char text[]) {
-	char* pch;
-	char* inputWords[BUFSIZ];
-	char output[1024];
-	int numWords = 0;
-	int matchedEn, matchedEs, matchedFr, matchedDe;
-
-	pch = strtok(text, " ");
-	while (pch != NULL) {
-		inputWords[numWords] = pch;
-		numWords++;
-		pch = strtok(NULL, " ");	
-	}
-
-	matchedEn = get_occurances(inputWords, numWords, "./en.dic");
-	matchedEs = get_occurances(inputWords, numWords, "./es.dic");
-	matchedFr = get_occurances(inputWords, numWords, "./fr.dic");
-	matchedDe = get_occurances(inputWords, numWords, "./de.dic");
-
-	sprintf(output, "English: %d/%d (%g%%)\n Spanish: %d/%d (%g%%)\n French: %d/%d (%g%%)\n German: %d/%d (%g%%)\n",
-			matchedEn, numWords, floor((matchedEn/(double)numWords)* 100),
-			matchedEs, numWords, floor((matchedEs/(double)numWords)* 100),
-			matchedFr, numWords, floor((matchedFr/(double)numWords)* 100),
-			matchedDe, numWords, floor((matchedDe/(double)numWords)* 100));
-
-	display_dialog(output);
-}
 
 int get_occurances(char* input[], int numWords, const char* filename) {
 	FILE* file = fopen(filename, "r");
@@ -70,5 +43,33 @@ int get_occurances(char* input[], int numWords, const char* filename) {
 
 	fclose(file);
 	return occurances;
+}
+
+void detect_language(char text[]) {
+	char* pch;
+	char* inputWords[BUFSIZ];
+	char output[1024];
+	int numWords = 0;
+	int matchedEn, matchedEs, matchedFr, matchedDe;
+
+	pch = strtok(text, " ");
+	while (pch != NULL) {
+		inputWords[numWords] = pch;
+		numWords++;
+		pch = strtok(NULL, " ");	
+	}
+
+	matchedEn = get_occurances(inputWords, numWords, "./en.dic");
+	matchedEs = get_occurances(inputWords, numWords, "./es.dic");
+	matchedFr = get_occurances(inputWords, numWords, "./fr.dic");
+	matchedDe = get_occurances(inputWords, numWords, "./de.dic");
+
+	sprintf(output, "English: %d/%d (%g%%)\n Spanish: %d/%d (%g%%)\n French: %d/%d (%g%%)\n German: %d/%d (%g%%)\n",
+			matchedEn, numWords, floor((matchedEn/(double)numWords)* 100),
+			matchedEs, numWords, floor((matchedEs/(double)numWords)* 100),
+			matchedFr, numWords, floor((matchedFr/(double)numWords)* 100),
+			matchedDe, numWords, floor((matchedDe/(double)numWords)* 100));
+
+	display_dialog(output);
 }
 

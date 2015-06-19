@@ -1,3 +1,5 @@
+#ifndef INCLUDE_GUI
+#define INCLUDE_GUI
 #ifdef GTK_UI
 #include <gtk/gtk.h>
 #endif
@@ -11,5 +13,8 @@
 #include "osx/init_osx.h"
 #endif
 
+#include "langdetect.h"
+
 void create_window(int argc, char* argv[]);
 void display_dialog(char* dialog);
+#endif
