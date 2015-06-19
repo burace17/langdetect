@@ -5,7 +5,7 @@ This is just a simple program that can detect whether the given text is in Engli
 It uses a dictionary of the top 1000 most used words in each language to show the user the probility of the text
 being in each language. In my experience, this is very accurate. 
 
-The main purpose of this, however, is to learn more about C and to learn about writing and maintaining cross platform applications.
+The main purpose of this, however, is to help me learn more about C and to learn about writing and maintaining cross platform applications.
 
 This was originally a programming challnge from the Reddit board /r/dailyprogrammer. However, I've extended it
 by creating a cross platform GUI application that can be built for Windows, Mac OS X, Linux and many other
