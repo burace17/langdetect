@@ -17,6 +17,11 @@ void create_window(int argc, char* argv[]) {
 	_gtk_create_window(argc, argv);
 #endif
 
+#ifdef __APPLE__
+	// Cocoa must be initialized with the objective c compiler, so we jump to objc code here.
+	objc_main(argc, argv);
+#endif
+
 #ifdef QT_UI
 	qt_create_window();
 #endif
@@ -33,6 +38,10 @@ void display_dialog(char output[]) {
 
 #ifdef _WIN32
 	MessageBox(NULL, output, "Results", MB_ICONINFORMATION);
+#endif
+
+#ifdef __APPLE__
+	objc_displayDialog(output);
 #endif
 }
 
@@ -93,7 +102,6 @@ void _gtk_create_window(int argc, char* argv[]) {
  */
 
 #ifdef _WIN32
-#include <stdlib.h>
 #define ID_EDIT 140
 #define ID_BUTTON 141
 HWND hWndEdit, hWndBtn;

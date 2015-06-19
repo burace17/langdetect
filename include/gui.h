@@ -4,6 +4,11 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#include <stdlib.h>
+#endif
+
+#ifdef __APPLE__
+#include "init_osx.h"
 #endif
 
 void create_window(int argc, char* argv[]);

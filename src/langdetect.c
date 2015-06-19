@@ -1,6 +1,5 @@
-/* Platform Independent Code */
-
 #include "langdetect.h"
+#include <errno.h>
 void detect_language(char text[]) {
 	char* pch;
 	char* inputWords[BUFSIZ];
@@ -29,29 +28,26 @@ void detect_language(char text[]) {
 	display_dialog(output);
 }
 
-/*
- * void strtolower(char str[], char result[]) {
- * 	unsigned int i;
- * 	for (i = 0; i < sizeof(str); i++) {
- *  		result[i] = tolower(str[i]);
- * 	}
- * }
- */
 int get_occurances(char* input[], int numWords, const char* filename) {
 	FILE* file = fopen(filename, "r");
 	int occurances = 0;
 	int i;
 	char buffer[BUFSIZ];
 
+	if (file == NULL) {
+		char error[1024];
+		char cwd[1024];
+		getcwd(cwd, sizeof(cwd));
+		sprintf(error, "Could not open file: %d\nCWD: %s", errno, cwd);
+		display_dialog(error);		
+		return 0;
+	}
+
 	while (fgets(buffer, sizeof(buffer), file)) {
 		size_t ln = strlen(buffer) - 1;
 		if (buffer[ln] == '\n')
 			buffer[ln] = '\0';
 		for (i = 0; i < numWords; i++) {
-      /*
-			 * char lowInput[sizeof(input[i])];
-			 * char lowBuffer[sizeof(buffer)];
-       */
 			if (input[i] == NULL) {
 				break;
 			}
@@ -62,10 +58,6 @@ int get_occurances(char* input[], int numWords, const char* filename) {
 				input[i][ln] = '\0';
 			}
 			
-      /*
-			 * strtolower(input[i], lowInput);
-			 * strtolower(buffer, lowBuffer);	
-       */
 #ifdef _WIN32
 			if (stricmp(input[i], buffer) == 0) {
 #else
