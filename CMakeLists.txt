@@ -33,9 +33,7 @@ if (APPLE)
 	set_target_properties (langdetect PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/osx/Info.plist)
 endif()
 
-if (WIN32)
-	target_link_libraries (langdetect m)
-elseif(NOT APPLE)
+elseif(NOT APPLE AND NOT WIN32)
 	target_link_libraries (langdetect m ${GTK_LDFLAGS})
 endif()
 
