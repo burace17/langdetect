@@ -38,3 +38,11 @@ if (WIN32)
 elseif(NOT APPLE)
 	target_link_libraries (langdetect m ${GTK_LDFLAGS})
 endif()
+
+if (NOT APPLE)
+	#	add_custom_command (TARGET langdetect POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_SOURCE_DIR}/dict/en.dic" 
+	#										$<TARGET_FILE_DIR:langdetect>)
+
+	file (GLOB DICTIONARIES "${PROJECT_SOURCE_DIR}/dict/*.dic")
+	file (COPY ${DICTIONARIES} DESTINATION .)
+endif()
