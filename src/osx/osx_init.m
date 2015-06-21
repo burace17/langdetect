@@ -1,4 +1,4 @@
-#include "osx/init_osx.h"
+#import "osx/osx_init.h"
 int objc_main(int argc, const char* argv[]) {
 	// OSX sets the default working directory to be / which screws up my fopen call
 	// To make things easier, I just change the working directory here to be our bundle's

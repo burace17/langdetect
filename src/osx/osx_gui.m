@@ -1,4 +1,4 @@
-#import "osx/gui_osx.h"
+#import "osx/osx_gui.h"
 
 @implementation AppDelegate
 @synthesize input;

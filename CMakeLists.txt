@@ -4,9 +4,9 @@ if (WIN32)
 	set (HEADER_FILES include/gui.h include/langdetect.h include/windows/windows_gui.h)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/windows/windows_gui.c)
 elseif (APPLE)
-	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/osx/init_osx.m
-		src/osx/gui_osx.m)
-	set (HEADER_FILES include/gui.h include/langdetect.h include/osx/init_osx.h include/osx/gui_osx.h)
+	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/osx/osx_init.m
+		src/osx/osx_gui.m)
+	set (HEADER_FILES include/gui.h include/langdetect.h include/osx/osx_init.h include/osx/osx_gui.h)
 	set (IB_FILES osx/MainMenu.nib)
 	set (OSX_BUNDLE MACOSX_BUNDLE)
 

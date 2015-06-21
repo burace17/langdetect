@@ -9,8 +9,8 @@
 #endif
 
 #ifdef __APPLE__
-#include "osx/init_osx.h"
-#include "osx/gui_osx.h"
+#include "osx/osx_init.h"
+#include "osx/osx_gui.h"
 #endif
 
 #ifdef HAIKU_OS

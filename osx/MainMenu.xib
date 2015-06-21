@@ -303,7 +303,7 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
-                            <action selector="objc_detectLanguage:" target="Voe-Tx-rLC" id="mxw-cJ-zxN"/>
+                            <action selector="objc_detect_language:" target="Voe-Tx-rLC" id="mxw-cJ-zxN"/>
                         </connections>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBb-x6-cuX">
@@ -313,7 +313,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="objc_detectLanguage:" target="Voe-Tx-rLC" id="Fby-Sl-iD8"/>
+                            <action selector="objc_detect_language:" target="Voe-Tx-rLC" id="Fby-Sl-iD8"/>
                         </connections>
                     </button>
                 </subviews>
