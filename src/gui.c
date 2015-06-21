@@ -22,8 +22,7 @@ void display_dialog(char output[]) {
 #ifdef __APPLE__
 	objc_displayDialog(output);
 #endif
-
-#ifdef __BEOS__
+#ifdef HAIKU_OS
 	beos_displayDialog(output);
 #endif
 
@@ -45,8 +44,7 @@ void create_window(int argc, char* argv[]) {
 	const char* cargv = (const char*)argv;
 	objc_main(argc, &cargv);
 #endif
-
-#ifdef __BEOS__
+#ifdef HAIKU_OS
 	beos_init();
 #endif
 

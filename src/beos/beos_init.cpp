@@ -12,6 +12,7 @@ void beos_init() {
 
 void beos_displayDialog(char output[]) {
 	BAlert* alert = new BAlert("Results", output, "OK", NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
+	//BAlert alert("Results", output, "OK", NULL, NULL, B_WIDTH_AS_USUAL, B_INFO_ALERT);
 	alert->Go();
-	delete alert;
+	//alert->Quit();
 }
