@@ -4,6 +4,6 @@
 	NSTextField *input;
 }
 @property (nonatomic, retain) IBOutlet NSTextField *input;
--(IBAction)objc_detectLanguage:(id)sender;
+-(IBAction)objc_detect_language:(id)sender;
 @end
-void objc_displayDialog(char output[]);
+void objc_display_dialog(char output[]);

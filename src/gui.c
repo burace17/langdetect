@@ -1,18 +1,8 @@
 #include "gui.h"
 
-#ifdef GTK_UI
-GtkWidget* input;
-GtkWidget* window;
-#endif
-
-
 void display_dialog(char output[]) {
 #ifdef GTK_UI
-	GtkWidget* dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT,
-		GTK_MESSAGE_INFO, GTK_BUTTONS_OK, output, "Results");
-	gtk_window_set_title(GTK_WINDOW(dialog), "Results");
-	gtk_dialog_run(GTK_DIALOG(dialog));
-	gtk_widget_destroy(dialog);
+	_gtk_display_dialog(output);
 #endif
 
 #ifdef _WIN32
@@ -20,10 +10,10 @@ void display_dialog(char output[]) {
 #endif
 
 #ifdef __APPLE__
-	objc_displayDialog(output);
+	objc_display_dialog(output);
 #endif
 #ifdef HAIKU_OS
-	beos_displayDialog(output);
+	beos_display_dialog(output);
 #endif
 
 }

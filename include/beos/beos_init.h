@@ -9,5 +9,5 @@ class App : public BApplication {
 };
 
 void beos_init();
-void beos_displayDialog(char output[]);
+void beos_display_dialog(char output[]);
 #endif

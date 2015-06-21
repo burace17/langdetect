@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUI
 #define INCLUDE_GUI
 #ifdef GTK_UI
-#include "gtk/gtk_ui.h"
+#include "gtk/gtk_gui.h"
 #endif
 
 #ifdef _WIN32
