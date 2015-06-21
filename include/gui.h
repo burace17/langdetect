@@ -13,6 +13,10 @@
 #include "osx/gui_osx.h"
 #endif
 
+#ifdef __BEOS__
+#include "beos/beos_init.h"
+#endif
+
 #include "langdetect.h"
 
 void create_window(int argc, char* argv[]);

@@ -22,6 +22,11 @@ void display_dialog(char output[]) {
 #ifdef __APPLE__
 	objc_displayDialog(output);
 #endif
+
+#ifdef __BEOS__
+	beos_displayDialog(output);
+#endif
+
 }
 
 
@@ -41,7 +46,14 @@ void create_window(int argc, char* argv[]) {
 	objc_main(argc, &cargv);
 #endif
 
+#ifdef __BEOS__
+	beos_init();
+#endif
+
 #ifdef QT_UI
 	qt_create_window();
 #endif
 }
+
+
+
