@@ -37,6 +37,8 @@ if (APPLE)
 	set_source_files_properties (dict/de.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 	set_target_properties (langdetect PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/osx/Info.plist)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
+	# This is kind of a hack to fix issues with adding Haiku's C++ headers to our existing C code
+	# Compiling everything as C++ makes things easier. 
 	set_source_files_properties(src/main.c PROPERTIES LANGUAGE CXX)
 	set_source_files_properties(src/gui.c PROPERTIES LANGUAGE CXX)
 	set_source_files_properties(src/langdetect.c PROPERTIES LANGUAGE CXX)
