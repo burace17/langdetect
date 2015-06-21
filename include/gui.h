@@ -1,12 +1,11 @@
 #ifndef INCLUDE_GUI
 #define INCLUDE_GUI
 #ifdef GTK_UI
-#include <gtk/gtk.h>
+#include "gtk/gtk_ui.h"
 #endif
 
 #ifdef _WIN32
-#include <windows.h>
-#include <stdlib.h>
+#include "windows/windows_gui.h"
 #endif
 
 #ifdef __APPLE__
