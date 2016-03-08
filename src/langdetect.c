@@ -202,7 +202,7 @@ void analyze(LIST_CELL_T** hash_table, FILE* fp) {
 	}	
 }
 
-void detect_language(char* text) {
+void detect_language(char* stop_files_dir, char* text) {
 	DIR* stop_files;
 	struct dirent* dir;
 	LIST_CELL_T** hash_table;
@@ -219,8 +219,8 @@ void detect_language(char* text) {
 	lang_occurances = calloc(LANG_INITIAL_SIZE, sizeof(LANG_T));
 
 	// open the stop files directory and then try to process each file
-	if ((stop_files = opendir("STOP_FILES/") != NULL)) {
-		chdir("STOP_FILES/");
+	if ((stop_files = opendir(stop_files_dir)) != NULL) {
+		chdir(stop_files_dir);
 		while ((dir = readdir(stop_files)) != NULL) {
 			if (dir->d_type == DT_REG) { 
 				process_language(hash_table, dir->d_name);
@@ -230,7 +230,7 @@ void detect_language(char* text) {
 					hash_free(hash_table);
 					free(lang_occurances);
 					closedir(stop_files);
-					return 1;
+					return;
 				} else if (errno == ENOENT) {
 					// skip file if we can't open it
 					printf("error: could not open %s, skipping file\n", dir->d_name);
@@ -238,8 +238,8 @@ void detect_language(char* text) {
 			}
 		}
 	} else {
-		perror("error: could not open stop file directory");
-		return 1;
+		display_dialog("could not open stop file directory");
+		return;
 	}
 
 

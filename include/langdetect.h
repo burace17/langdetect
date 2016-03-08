@@ -7,6 +7,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <errno.h>
 
 // size of hash table
 #define HT_SIZE 1000
@@ -41,5 +42,5 @@ typedef struct list_cell {
 	struct list_cell* next;
 } LIST_CELL_T;
 
-void detect_language(char* text);
+void detect_language(char* stop_files_dir, char* text);
 #endif
