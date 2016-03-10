@@ -9,6 +9,16 @@
 	detect_language(text);
 }
 
+-(IBAction)selectStopFiles:(id)sender {
+    NSOpenPanel* selectDlg = [NSOpenPanel openPanel];
+    [selectDlg setCanChooseFiles:NO];
+    [selectDlg setCanChooseDirectories:YES];
+    
+    if ([selectDlg runModalForDirectory:nil file:nil] == NSOKButton) {
+        initialize([[[selectDlg filenames] objectAtIndex:0] UTF8String]);
+    }
+}
+
 @end
 
 void objc_display_dialog(char output[]) {
