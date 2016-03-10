@@ -187,21 +187,16 @@ void update_occurances(LANG_LIST_T* list) {
 // a file to analyze. it updates the lang_occurances array
 // with the number of time each encountered word appears in the
 // languages that we can track. 
-void analyze(LIST_CELL_T** hash_table, FILE* fp) {
-	char buffer[BUFSIZ];
+void analyze(LIST_CELL_T** hash_table, char* text) {
 	char* word;
 	KV_PAIR_T* kv; 
-	while (fgets(buffer, sizeof(buffer), fp)) {
-		buffer[strcspn(buffer, "\n")] = '\0';
-		word = strtok(buffer, " ");
-		while (word != NULL) {
-			kv = find_word(hash_table, word);		
-			if (kv != NULL) {
-				update_occurances(kv->value);			
-			}
-			word = strtok(NULL, " ");	
-		}	
-	}	
+	word = strtok(text, " ");
+	while (word != NULL) {
+		kv = find_word(hash_table, word);
+		if (kv != NULL)
+			update_occurances(kv->value);
+		word = strtok(NULL, " ");
+	}
 }
 
 void cleanup() {
@@ -253,7 +248,6 @@ int initialize(char* stop_files_dir) {
 
 void detect_language(char* text) {
 	size_t i;
-	FILE* text_stream;
 	unsigned int max = 0;
 	size_t max_index = 0;
 	char output[BUFSIZ];
@@ -262,10 +256,8 @@ void detect_language(char* text) {
 		display_dialog("Please select a folder containing the stop words to use");
 		return;
 	}
-	text_stream = fmemopen(text, strlen(text), "r");
-
-	analyze(word_dictionary, text_stream);
-	fclose(text_stream);
+	
+	analyze(word_dictionary, text);
 
 	// find out which language has the most occurances
 	for (i = 0; i < numberOfLanguages; i++) {

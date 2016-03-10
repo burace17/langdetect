@@ -15,6 +15,9 @@
 // initial size of the language occurance array
 #define LANG_INITIAL_SIZE 50
 
+#ifdef _WIN32
+#define inline __inline
+#endif
 
 // used to keep track of the number of words encountered for each language
 typedef struct {
