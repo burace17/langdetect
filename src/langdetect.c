@@ -200,8 +200,12 @@ void analyze(LIST_CELL_T** hash_table, char* text) {
 }
 
 void cleanup() {
-	hash_free(word_dictionary);
-	free(lang_occurances);
+	if (word_dictionary != NULL) {
+		hash_free(word_dictionary);
+	}
+	if (lang_occurances != NULL) {
+		free(lang_occurances);
+	}
 }
 
 int initialize(char* stop_files_dir) {

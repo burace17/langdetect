@@ -1,11 +1,23 @@
 #include "windows/windows_gui.h"
 #define ID_EDIT 140
 #define ID_BUTTON 141
-HWND hWndEdit, hWndBtn;
+#define ID_SELECT_BUTTON 122
+static HWND hWndEdit, hWndBtn, hWndSelectBtn;
+LRESULT CALLBACK BrowseProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
+{
+	if (msg = BFFM_INITIALIZED) {
+		SendMessage(hwnd, BFFM_SETSELECTION, TRUE, lParam);
+	}
+	return 0;
+}
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	int wmId, wmEvent, len;
 	char* buffer;
+	BROWSEINFO bi;
+	LPITEMIDLIST idList;
+	TCHAR path[MAX_PATH];
+
 	switch (msg)
 	{
 	case WM_CREATE:
@@ -20,18 +32,29 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			(HMENU)ID_EDIT,
 			(HINSTANCE)GetWindowLong(hwnd, -6),
 			NULL);
-
+		
 		// Create button
 		hWndBtn = CreateWindow(
 			"BUTTON",
 			NULL,
 			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-			171, 260, 139, 27,
+			150, 260, 180, 27,
 			hwnd,
 			(HMENU)ID_BUTTON,
 			(HINSTANCE)GetWindowLong(hwnd, -6),
 			NULL);
 		SetDlgItemText(hwnd, ID_BUTTON, "Detect Language");
+		
+		hWndSelectBtn = CreateWindow(
+			"BUTTON",
+			NULL,
+			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+			150, 300, 180, 27,
+			hwnd,
+			(HMENU)ID_SELECT_BUTTON,
+			(HINSTANCE)GetWindowLong(hwnd, -6),
+			NULL);
+		SetDlgItemText(hwnd, ID_SELECT_BUTTON, "Select Stop Files Directory");
 	}
 		break;
 	case WM_COMMAND:
@@ -47,6 +70,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			/* jump to platform independent code */
 			detect_language(buffer);
 			free(buffer);
+		}
+			break;
+		case ID_SELECT_BUTTON:
+		{
+			ZeroMemory(&bi, sizeof(BROWSEINFO));
+			bi.hwndOwner = hwnd;
+			bi.lpszTitle = "Select stop files directory";
+			bi.ulFlags = BIF_RETURNONLYFSDIRS;
+			bi.lpfn = BrowseProc;
+
+
+			idList = SHBrowseForFolder(&bi);
+			if (idList != NULL) {
+				SHGetPathFromIDList(idList, path);
+				initialize(path);
+			}
 		}
 			break;
 		default:
@@ -90,7 +129,7 @@ void win32_create_window() {
 	}
 
 	hwnd = CreateWindow("LANG", "Language Detector", WS_OVERLAPPEDWINDOW&~WS_MAXIMIZEBOX&~WS_THICKFRAME,
-		CW_USEDEFAULT, 0, 480, 335, NULL, NULL, hInstance, NULL);
+		CW_USEDEFAULT, 0, 480, 375, NULL, NULL, hInstance, NULL);
 
 	if (hwnd == NULL)
 	{
@@ -106,6 +145,6 @@ void win32_create_window() {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-
+	cleanup();
 }
 
