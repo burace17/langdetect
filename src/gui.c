@@ -1,6 +1,6 @@
 #include "gui.h"
 
-void display_dialog(char output[]) {
+void display_dialog(char* output) {
 #ifdef GTK_UI
 	_gtk_display_dialog(output);
 #endif
@@ -19,7 +19,7 @@ void display_dialog(char output[]) {
 }
 
 
-void create_window(int argc, char* argv[]) {
+void create_window(int argc, char** argv) {
 #ifdef _WIN32
 	win32_create_window();
 #endif

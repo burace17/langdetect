@@ -1,8 +1,9 @@
 #include "gtk/gtk_gui.h"
-GtkWidget* window;
-GtkWidget* input;
-char stop_words_dir_path[BUFSIZ];
-void _gtk_display_dialog(char output[]) {
+
+static GtkWidget* window;
+static GtkWidget* input;
+
+void _gtk_display_dialog(char* output) {
 	GtkWidget* dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, output, "Results");
 	gtk_window_set_title(GTK_WINDOW(dialog), "Results");
 	gtk_dialog_run(GTK_DIALOG(dialog));
@@ -20,7 +21,7 @@ void select_button_click(GtkWidget* widget, gpointer data) {
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		strncpy(stop_words_dir_path, filename, sizeof(stop_words_dir_path));
+		initialize(filename);
 		g_free(filename);	
 	}
 
@@ -38,10 +39,16 @@ void detect_button_click(GtkWidget* widget, gpointer data) {
 
 	text = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
 
-	detect_language(stop_words_dir_path, text);
+	detect_language(text);
 	g_free(text);
 }
-void _gtk_create_window(int argc, char* argv[]) {
+
+void _gtk_destroy_window() {
+	cleanup();
+	gtk_main_quit();
+}
+
+void _gtk_create_window(int argc, char** argv) {
 	GtkWidget* button;
 	GtkWidget* stop_button;
 	GtkWidget* frame;
@@ -70,7 +77,7 @@ void _gtk_create_window(int argc, char* argv[]) {
 
 	gtk_widget_show_all(window);
 
-	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+	g_signal_connect(window, "destroy", G_CALLBACK(_gtk_destroy_window), NULL);
 	g_signal_connect(button, "clicked", G_CALLBACK(detect_button_click), NULL);
 	g_signal_connect(stop_button, "clicked", G_CALLBACK(select_button_click), NULL);
 

@@ -4,6 +4,8 @@
 static LANG_T* lang_occurances;
 static size_t lang_occurances_size = LANG_INITIAL_SIZE;
 static size_t numberOfLanguages;
+static int initialized = 0;
+static LIST_CELL_T** word_dictionary;
 
 // slightly modified string hashing function (sdbm) from: 
 // http://www.cse.yorku.ca/~oz/hash.html
@@ -202,18 +204,22 @@ void analyze(LIST_CELL_T** hash_table, FILE* fp) {
 	}	
 }
 
-void detect_language(char* stop_files_dir, char* text) {
+void cleanup() {
+	hash_free(word_dictionary);
+	free(lang_occurances);
+}
+
+int initialize(char* stop_files_dir) {
 	DIR* stop_files;
 	struct dirent* dir;
-	LIST_CELL_T** hash_table;
-	unsigned int max = 0;
-	size_t max_index = 0;
-	size_t i;
-	FILE* text_stream;
-	char output[BUFSIZ];
+
+	// cleanup existing resources
+	if (initialized) {
+		cleanup();
+	}
 
 	// Create hash table 
-	hash_table = calloc(HT_SIZE, sizeof(LIST_CELL_T*));
+	word_dictionary = calloc(HT_SIZE, sizeof(LIST_CELL_T*));
 
 	// Create language occurance array
 	lang_occurances = calloc(LANG_INITIAL_SIZE, sizeof(LANG_T));
@@ -223,14 +229,13 @@ void detect_language(char* stop_files_dir, char* text) {
 		chdir(stop_files_dir);
 		while ((dir = readdir(stop_files)) != NULL) {
 			if (dir->d_type == DT_REG) { 
-				process_language(hash_table, dir->d_name);
+				process_language(word_dictionary, dir->d_name);
 			  if (errno == ENOMEM) {
 					// terminate if language processing failed due to lack of memory
 					printf("error: out of memory\n");
-					hash_free(hash_table);
-					free(lang_occurances);
+					cleanup();
 					closedir(stop_files);
-					return;
+					return 1;
 				} else if (errno == ENOENT) {
 					// skip file if we can't open it
 					printf("error: could not open %s, skipping file\n", dir->d_name);
@@ -239,12 +244,27 @@ void detect_language(char* stop_files_dir, char* text) {
 		}
 	} else {
 		display_dialog("could not open stop file directory");
-		return;
+		return 1;
 	}
 
+	initialized = 1;
+	return 0;
+}
 
+void detect_language(char* text) {
+	size_t i;
+	FILE* text_stream;
+	unsigned int max = 0;
+	size_t max_index = 0;
+	char output[BUFSIZ];
+
+	if (!initialized) {
+		display_dialog("Please select a folder containing the stop words to use");
+		return;
+	}
 	text_stream = fmemopen(text, strlen(text), "r");
-	analyze(hash_table, text_stream);
+
+	analyze(word_dictionary, text_stream);
 	fclose(text_stream);
 
 	// find out which language has the most occurances
@@ -256,11 +276,14 @@ void detect_language(char* stop_files_dir, char* text) {
 	}
 
 	// finally, print out the language with the most occurances
-	sprintf(output, "%s\n", lang_occurances[max_index].lang_name);
-	display_dialog(output);
-
-	// clean up
-	hash_free(hash_table);
-	free(lang_occurances);
-	closedir(stop_files);
+	if (max == 0) {
+		display_dialog("Could not identify language");
+	}
+	else {
+		sprintf(output, "%s", lang_occurances[max_index].lang_name);
+		display_dialog(output);
+		for (i = 0; i < numberOfLanguages; i++) {
+			lang_occurances[i].occurances = 0;
+		}
+	}
 }

@@ -42,5 +42,7 @@ typedef struct list_cell {
 	struct list_cell* next;
 } LIST_CELL_T;
 
-void detect_language(char* stop_files_dir, char* text);
+int initialize(char* stop_files_dir);
+void detect_language(char* text);
+void cleanup();
 #endif
