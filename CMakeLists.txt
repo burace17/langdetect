@@ -27,14 +27,10 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
 endif()
 
 include_directories(./include)
-add_executable (langdetect ${OSX_BUNDLE} ${SRC_FILES} ${HEADER_FILES} ${IB_FILES} dict/en.dic dict/es.dic dict/fr.dic dict/de.dic)
+add_executable (langdetect ${OSX_BUNDLE} ${SRC_FILES} ${HEADER_FILES} ${IB_FILES})
 
 if (APPLE)
 	set_source_files_properties (${IB_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-	set_source_files_properties (dict/en.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-	set_source_files_properties (dict/es.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-	set_source_files_properties (dict/fr.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-	set_source_files_properties (dict/de.dic PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 	set_target_properties (langdetect PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/osx/Info.plist)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
 	# This is kind of a hack to fix issues with adding Haiku's C++ headers to our existing C code
@@ -52,6 +48,5 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
 endif()
 
 if (NOT APPLE)
-	file (GLOB DICTIONARIES "${PROJECT_SOURCE_DIR}/dict/*.dic")
 	file (COPY ${DICTIONARIES} DESTINATION .)
 endif()

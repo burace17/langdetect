@@ -318,7 +318,7 @@
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OsG-mx-MSf">
                         <rect key="frame" x="140" y="13" width="201" height="32"/>
-                        <buttonCell key="cell" type="push" title="Select Stop Files Directory" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gVy-9v-zui">
+                        <buttonCell key="cell" type="push" title="Select Stop Words Directory" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gVy-9v-zui">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
