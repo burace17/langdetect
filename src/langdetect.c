@@ -200,6 +200,8 @@ void analyze(LIST_CELL_T** hash_table, char* text) {
 }
 
 void cleanup() {
+	numberOfLanguages = 0;
+	lang_occurance_size = LANG_INITIAL_SIZE;
 	if (word_dictionary != NULL) {
 		hash_free(word_dictionary);
 	}
