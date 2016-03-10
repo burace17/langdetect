@@ -17,11 +17,13 @@
     if ([selectDlg runModalForDirectory:nil file:nil] == NSOKButton) {
         initialize([[[selectDlg filenames] objectAtIndex:0] UTF8String]);
     }
+
+		[selectDlg release];
 }
 
 @end
 
-void objc_display_dialog(char output[]) {
+void objc_display_dialog(char* output) {
 	NSString *newOutput = [NSString stringWithUTF8String:output];
 	NSAlert *alert = [[NSAlert alloc] init];
 	[alert setMessageText:@"Results"];
