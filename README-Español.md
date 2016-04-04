@@ -1,7 +1,7 @@
 langdetect
 ================================================================
 
-Este proyecto es un programa simple para identificar que el idioma de un texto. Usa palabras comúnes para identificarlo. Estas palabras se llaman "stop words" y usan por buscadores para eliminar palabras sin importancia a la búsqueda. En Español, palabras como "el" y "la" son "stop words". He incluido listas para muchos idiomas. 
+Este proyecto es un programa simple para identificar el idioma de un texto. Usa palabras comúnes para identificarlo. Estas palabras se llaman "stop words" y usan por buscadores para eliminar palabras sin importancia a la búsqueda. En Español, palabras como "el" y "la" son "stop words". He incluido listas para muchos idiomas. 
 
 El objectivo para este proyecto es para ganar experiencia con la lengua C y para aprender como crear y matener un programa de sistemas diferences (como Windows, Linux, OSX, etc.). 
 
