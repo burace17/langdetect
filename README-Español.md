@@ -27,4 +27,4 @@ sin embargo, para OS X, haz:
 si no, el programa no se ejecutará
 
 
-(Me disculpo por algunos errores de tradución) 
+(Me disculpo por errores de la tradución) 
