@@ -4,7 +4,7 @@
 #include "gtk/gtk_gui.h"
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(UAP)
 #include "windows/windows_gui.h"
 #endif
 

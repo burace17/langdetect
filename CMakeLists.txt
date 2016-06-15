@@ -1,8 +1,45 @@
 cmake_minimum_required (VERSION 2.6)
 project (langdetect)
-if (WIN32)
+
+MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
+  IF(MSVC)
+    GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
+    SET(PrecompiledBinary "${CMAKE_CURRENT_BINARY_DIR}/${PrecompiledBasename}.pch")
+    SET(Sources ${${SourcesVar}})
+
+    SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource}
+                                PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
+                                           OBJECT_OUTPUTS "${PrecompiledBinary}")
+    SET_SOURCE_FILES_PROPERTIES(${Sources}
+                                PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
+                                           OBJECT_DEPENDS "${PrecompiledBinary}")  
+    # Add precompiled header to SourcesVar
+    LIST(APPEND ${SourcesVar} ${PrecompiledSource})
+  ENDIF(MSVC)
+ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
+
+# Windows 10 Universal App
+if (${CMAKE_SYSTEM_NAME} MATCHES "WindowsStore")
+	include_directories(./include/windows-uwp)
+	add_definitions (-DUAP -D_CRT_SECURE_NO_WARNINGS)
+	ADD_MSVC_PRECOMPILED_HEADER("${CMAKE_CURRENT_SOURCE_DIR}/include/windows-uwp/pch.h" "${CMAKE_CURRENT_SOURCE_DIR}/src/windows-uwp/pch.cpp" SRC_FILES)
+	set (HEADER_FILES include/gui.h include/langdetect.h include/windows-uwp/App.xaml.h 
+		include/windows-uwp/MainPage.xaml.h include/windows-uwp/langdetect-uap.h
+		include/windows-uwp/str-utils.h)
+
+	set (SRC_FILES src/windows-uwp/App.xaml.cpp src/langdetect.c src/gui.c src/windows-uwp/MainPage.xaml.cpp 
+		src/windows-uwp/langdetect-uap.cpp src/windows-uwp/str-utils.cpp
+		src/windows-uwp/App.xaml
+		src/windows-uwp/MainPage.xaml)
+
+	set (CMAKE_CXX_FLAGS "/ZW /EHsc")
+	set_source_files_properties(src/langdetect.c PROPERTIES LANGUAGE CXX)
+	set_source_files_properties(src/gui.c PROPERTIES LANGUAGE CXX)
+# Win32
+elseif (WIN32)
 	set (HEADER_FILES include/gui.h include/langdetect.h include/windows/windows_gui.h)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/windows/windows_gui.c)
+# OS X
 elseif (APPLE)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/osx/osx_init.m
 		src/osx/osx_gui.m)
@@ -12,6 +49,8 @@ elseif (APPLE)
 
 	set (CMAKE_C_FLAGS "-x objective-c")
 	set(CMAKE_EXE_LINKER_FLAGS "-framework Cocoa -framework AppKit -framework Foundation")
+
+# Linux
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	include (FindPkgConfig)
 	pkg_search_module (GTK REQUIRED gtk+-2.0)
@@ -19,6 +58,8 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	include_directories (${GTK_INCLUDE_DIRS})
 	set (HEADER_FILES include/gui.h include/langdetect.h include/gtk/gtk_gui.h)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/gtk/gtk_gui.c)
+
+# Haiku
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
 	add_definitions (-DHAIKU_OS)
 	set (HEADER_FILES include/gui.h include/langdetect.h include/beos/beos_gui.h include/beos/beos_init.h)

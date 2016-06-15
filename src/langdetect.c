@@ -1,3 +1,8 @@
+#ifdef UAP
+#include "pch.h"
+using namespace Windows::Storage;
+#endif
+
 #include "langdetect.h"
 
 // this array stores the number of words found for each language we process.
@@ -11,15 +16,15 @@ static LIST_CELL_T** word_dictionary;
 // http://www.cse.yorku.ca/~oz/hash.html
 unsigned long hash(char *str) {
 	unsigned long hash = 0;
-	int c;				
+	int c;
 	while ((c = *str++))
-		hash = c + (hash << 6) + (hash << 16) - hash;			
+		hash = c + (hash << 6) + (hash << 16) - hash;
 	return hash;
 }
 
 // gets the index in the hash table of the given key
 static inline unsigned int hash_get_index(char* key) {
-	return hash(key) % HT_SIZE;	
+	return hash(key) % HT_SIZE;
 }
 
 // returns the list cell that contains the target key
@@ -27,7 +32,7 @@ LIST_CELL_T* hash_get_cell(char* key, LIST_CELL_T* list) {
 	LIST_CELL_T* p;
 	for (p = list; p != NULL; p = p->next) {
 		if (strcmp(p->pair->key, key) == 0) {
-			return p;	
+			return p;
 		}
 	}
 	return NULL;
@@ -41,10 +46,10 @@ void hash_put_kv(LIST_CELL_T** hash_table, KV_PAIR_T* kv) {
 	LIST_CELL_T* cell = hash_get_cell(kv->key, hash_table[index]);
 	if (cell == NULL) {
 		// if there's nothing in this cell, allocate some memory for it
-		LIST_CELL_T* cell = calloc(1, sizeof(LIST_CELL_T));
+		LIST_CELL_T* cell = (LIST_CELL_T*)calloc(1, sizeof(LIST_CELL_T));
 		cell->pair = kv;
 		cell->next = hash_table[index];
-		hash_table[index] = cell;	
+		hash_table[index] = cell;
 	}
 	else {
 		// this key is already in the hash table
@@ -92,11 +97,15 @@ KV_PAIR_T* find_word(LIST_CELL_T** hash_table, char* word) {
 		return cell->pair;
 	}
 	return NULL;
-} 
+}
 
 // adds all of the stop words in the given file to the hash table
 // sets errno if a problem occurs
+#ifdef UAP
+void process_language(LIST_CELL_T** hash_table, StorageFile^ name) {
+#else
 void process_language(LIST_CELL_T** hash_table, char* name) {
+#endif
 	FILE* fp;
 	char line[BUFSIZ];
 	char* language;
@@ -106,19 +115,23 @@ void process_language(LIST_CELL_T** hash_table, char* name) {
 	LANG_T* tmp;
 
 	if ((fp = fopen(name, "r")) != NULL) {
+#ifdef UAP
+		language = wstr_to_utf8(name->DisplayName);
+#else
 		// the language name will be everything before the .
 		language = strtok(name, ".");
+#endif
 
 		// add this language to the language occurance array
-		strncpy(lang.lang_name, language, sizeof(lang.lang_name));	
+		strncpy(lang.lang_name, language, sizeof(lang.lang_name));
 		lang.occurances = 0;
 
 		if (numberOfLanguages == lang_occurances_size) {
 			// if the array is full, double its size
-			tmp = realloc(lang_occurances, lang_occurances_size * 2 * sizeof(LANG_T));
+			tmp = (LANG_T*)realloc(lang_occurances, lang_occurances_size * 2 * sizeof(LANG_T));
 			if (tmp != NULL) {
 				lang_occurances = tmp;
-  			lang_occurances_size *= 2;
+				lang_occurances_size *= 2;
 			}
 			else {
 				fclose(fp);
@@ -136,20 +149,21 @@ void process_language(LIST_CELL_T** hash_table, char* name) {
 
 			// locate this word in the hash table (it may or may not be there already)
 			kv = find_word(hash_table, line);
-		
-		  // allocate some memory to store this language in the language list	for this word
-			cell = calloc(1, sizeof(LANG_LIST_T));
+
+			// allocate some memory to store this language in the language list	for this word
+			cell = (LANG_LIST_T*)calloc(1, sizeof(LANG_LIST_T));
 			strncpy(cell->name, language, sizeof(cell->name));
-			
+
 			if (kv != NULL) {
 				// word is in hash table
 				// add this language to the front of the linked list
 				cell->next = kv->value;
 				kv->value = cell;
-			} else {
+			}
+			else {
 				// this word isn't in the hash table, so we need to allocate some memory for its
 				// KV pair. 
-				kv = calloc(1, sizeof(KV_PAIR_T));
+				kv = (KV_PAIR_T*)calloc(1, sizeof(KV_PAIR_T));
 				// copy the language name to the key 
 				strncpy(kv->key, line, sizeof(kv->key));
 				// value is the linked list of languages
@@ -157,8 +171,9 @@ void process_language(LIST_CELL_T** hash_table, char* name) {
 				hash_put_kv(hash_table, kv);
 			}
 
-		}	
-	} else {
+		}
+	}
+	else {
 		errno = ENOENT;
 		return;
 	}
@@ -172,14 +187,14 @@ void process_language(LIST_CELL_T** hash_table, char* name) {
 // with multiple languages
 void update_occurances(LANG_LIST_T* list) {
 	LANG_LIST_T* p;
-	size_t i;	
+	size_t i;
 	for (p = list; p != NULL; p = p->next) {
 		for (i = 0; i < numberOfLanguages; i++) {
 			if (strcmp(p->name, lang_occurances[i].lang_name) == 0) {
 				lang_occurances[i].occurances++;
 				break;
-			}	
-		}	
+			}
+		}
 	}
 }
 
@@ -189,7 +204,7 @@ void update_occurances(LANG_LIST_T* list) {
 // languages that we can track. 
 void analyze(LIST_CELL_T** hash_table, char* text) {
 	char* word;
-	KV_PAIR_T* kv; 
+	KV_PAIR_T* kv;
 	word = strtok(text, " ");
 	while (word != NULL) {
 		kv = find_word(hash_table, word);
@@ -210,7 +225,11 @@ void cleanup() {
 	}
 }
 
+#ifdef UAP
+int initialize(StorageFolder^ stop_files_dir) {
+#else
 int initialize(char* stop_files_dir) {
+#endif
 	DIR* stop_files;
 	struct dirent* dir;
 
@@ -220,35 +239,42 @@ int initialize(char* stop_files_dir) {
 	}
 
 	// Create hash table 
-	word_dictionary = calloc(HT_SIZE, sizeof(LIST_CELL_T*));
+	word_dictionary = (LIST_CELL_T**)calloc(HT_SIZE, sizeof(LIST_CELL_T*));
 
 	// Create language occurance array
-	lang_occurances = calloc(LANG_INITIAL_SIZE, sizeof(LANG_T));
+	lang_occurances = (LANG_T*)calloc(LANG_INITIAL_SIZE, sizeof(LANG_T));
 
 	// open the stop files directory and then try to process each file
 	if ((stop_files = opendir(stop_files_dir)) != NULL) {
 		chdir(stop_files_dir);
+
+#ifdef UAP
+		stop_files->folder = stop_files_dir;
+#endif
+
 		while ((dir = readdir(stop_files)) != NULL) {
-			if (dir->d_type == DT_REG) { 
+			if (dir->d_type == DT_REG) {
 				process_language(word_dictionary, dir->d_name);
-			  if (errno == ENOMEM) {
+				if (errno == ENOMEM) {
 					// terminate if language processing failed due to lack of memory
 					printf("error: out of memory\n");
 					cleanup();
 					closedir(stop_files);
 					return 1;
-				} else if (errno == ENOENT) {
+				}
+				else if (errno == ENOENT) {
 					// skip file if we can't open it
 					printf("error: could not open %s, skipping file\n", dir->d_name);
 				}
 			}
 		}
-	} else {
+	}
+	else {
 		display_dialog("could not open stop file directory");
 		return 1;
 	}
-
 	initialized = 1;
+	closedir(stop_files);
 	return 0;
 }
 
@@ -262,15 +288,15 @@ void detect_language(char* text) {
 		display_dialog("Please select a folder containing the stop words to use");
 		return;
 	}
-	
+
 	analyze(word_dictionary, text);
 
 	// find out which language has the most occurances
 	for (i = 0; i < numberOfLanguages; i++) {
-		 if (lang_occurances[i].occurances > max) {
-		 		max = lang_occurances[i].occurances;
-				max_index = i;
-		 }	
+		if (lang_occurances[i].occurances > max) {
+			max = lang_occurances[i].occurances;
+			max_index = i;
+		}
 	}
 
 	// finally, print out the language with the most occurances
@@ -285,3 +311,4 @@ void detect_language(char* text) {
 		}
 	}
 }
+

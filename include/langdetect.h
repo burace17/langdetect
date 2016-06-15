@@ -2,12 +2,19 @@
 #define INCLUDE_LANGDETECT
 #include "gui.h"
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
+#ifndef UAP
 #include <dirent.h>
 #include <unistd.h>
+#endif
+
 #include <stdlib.h>
 #include <errno.h>
+
+#ifdef UAP
+#include "langdetect-uap.h"
+using namespace Windows::Storage;
+#endif
 
 // size of hash table
 #define HT_SIZE 1000
@@ -15,9 +22,6 @@
 // initial size of the language occurance array
 #define LANG_INITIAL_SIZE 50
 
-#ifdef _WIN32
-#define inline __inline
-#endif
 
 // used to keep track of the number of words encountered for each language
 typedef struct {
@@ -45,7 +49,12 @@ typedef struct list_cell {
 	struct list_cell* next;
 } LIST_CELL_T;
 
+#ifdef UAP
+int initialize(StorageFolder^ stop_files_dir);
+#else
 int initialize(char* stop_files_dir);
+#endif
+
 void detect_language(char* text);
 void cleanup();
 #endif
