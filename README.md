@@ -33,7 +33,7 @@ Universal Windows Platform
 
 I just recently added support for UWP in Windows 10. It is still experimental. To build for UWP, use the following command:
 
-  cmake -G "Visual Studio 14 2015" -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=10.0
+    cmake -G "Visual Studio 14 2015" -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=10.0
 
 After running this command, you MUST run the included PowerShell script or the application will not compile. CMake does not generate the project file properly and I can't find a better way of fixing it. 
 
