@@ -49,9 +49,14 @@ void create_window(int argc, char** argv) {
 
 char* get_language_name(STOP_FILE name) {
 #ifdef UWP
-	return wstr_to_utf8(name->DisplayName);
+	char* str = new char[wstr_size_needed(name->DisplayName)];
+	wstr_to_utf8(name->DisplayName, str);
 #else
-	return strtok(name, ".");
+	char* str = new char[strlen(name)];
+	char* lang = strtok(name, ".");
+	strncpy(str, lang, sizeof(str));
 #endif
+
+	return str;
 }
 

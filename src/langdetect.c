@@ -96,20 +96,17 @@ KV_PAIR_T* find_word(LIST_CELL_T** hash_table, char* word) {
 
 // adds all of the stop words in the given file to the hash table
 // sets errno if a problem occurs
-void process_language(LIST_CELL_T** hash_table, STOP_FILE name) {
+void process_language(LIST_CELL_T** hash_table, STOP_FILE file_name, char* language_name) {
 	FILE* fp;
 	char line[BUFSIZ];
-	char* language;
 	LANG_T lang;
 	KV_PAIR_T* kv;
 	LANG_LIST_T* cell;
 	LANG_T* tmp;
 
-	if ((fp = fopen(name, "r")) != NULL) {
-		language = get_language_name(name);
-
+	if ((fp = fopen(file_name, "r")) != NULL) {	
 		// add this language to the language occurance array
-		strncpy(lang.lang_name, language, sizeof(lang.lang_name));
+		strncpy(lang.lang_name, language_name, sizeof(lang.lang_name));
 		lang.occurances = 0;
 
 		if (numberOfLanguages == lang_occurances_size) {
@@ -138,7 +135,7 @@ void process_language(LIST_CELL_T** hash_table, STOP_FILE name) {
 
 			// allocate some memory to store this language in the language list	for this word
 			cell = (LANG_LIST_T*)calloc(1, sizeof(LANG_LIST_T));
-			strncpy(cell->name, language, sizeof(cell->name));
+			strncpy(cell->name, language_name, sizeof(cell->name));
 
 			if (kv != NULL) {
 				// word is in hash table
@@ -158,8 +155,6 @@ void process_language(LIST_CELL_T** hash_table, STOP_FILE name) {
 			}
 
 		}
-
-		free(language);
 	}
 	else {
 		errno = ENOENT;
@@ -216,6 +211,7 @@ void cleanup() {
 int initialize(STOP_FILES_DIR stop_files_dir) {
 	DIR* stop_files;
 	struct dirent* dir;
+	char* language_name;
 
 	// cleanup existing resources
 	if (initialized) {
@@ -233,7 +229,15 @@ int initialize(STOP_FILES_DIR stop_files_dir) {
 		chdir(stop_files_dir);
 		while ((dir = readdir(stop_files)) != NULL) {
 			if (dir->d_type == DT_REG) {
-				process_language(word_dictionary, dir->d_name);
+				// get the language name from whatever object we are dealing with. char* or StorageFile^?
+				language_name = get_language_name(dir->d_name);
+
+				// process
+				process_language(word_dictionary, dir->d_name, language_name);
+				
+				// free up memory allocated when getting the language name
+				free(language_name);
+
 				if (errno == ENOMEM) {
 					// terminate if language processing failed due to lack of memory
 					display_dialog("Out of memory. Please restart application");

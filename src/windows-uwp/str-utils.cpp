@@ -12,7 +12,12 @@ char* wstr_to_utf8(String^ str) {
 	return utf8;
 }
 
-// Converts a CX string to an already allocated existing UTF8 C string
+// Array size needed to convert this CX string to UTF8 C string
+int wstr_size_needed(String^ str) {
+	return WideCharToMultiByte(CP_UTF8, 0, str->Data(), str->Length(), NULL, 0, NULL, NULL) + 1;
+}
+
+// Converts a CX string to an already allocated UTF8 C string
 void wstr_to_utf8(String^ src, char* dest) {
 	int size_needed = WideCharToMultiByte(CP_UTF8, 0, src->Data(), src->Length(), NULL, 0, NULL, NULL);
 	WideCharToMultiByte(CP_UTF8, 0, src->Data(), wcslen(src->Data()), dest, size_needed + 1, NULL, NULL);
