@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "langdetect-uap.h"
+#include "langdetect-uwp.h"
 
 using namespace Platform;
 using namespace Windows::Foundation;
@@ -9,19 +9,19 @@ using namespace Windows::UI::Popups;
 using namespace concurrency;
 using namespace std;
 
-UAP_DIR* uap_opendir(StorageFolder^ folder) {
-	UAP_DIR* udir = new UAP_DIR();
+UWP_DIR* uwp_opendir(StorageFolder^ folder) {
+	UWP_DIR* udir = new UWP_DIR();
 	udir->file_ptr = 0;
 
 	// ask WinRT to get a vector of all of the files in this folder.
 	// we store this vector in the DIR object. each file will have a corresponding dirent struct.
 	// it stores the StorageFile object for the file, which will allow us to read it. 
 	auto f = create_task(folder->GetFilesAsync()).then([=](IVectorView<StorageFile^>^ filesInFolder) {
-		udir->files = new uap_dirent*[filesInFolder->Size];
+		udir->files = new uwp_dirent*[filesInFolder->Size];
 		udir->numberOfFiles = filesInFolder->Size;
 		for (auto it = filesInFolder->First(); it->HasCurrent; it->MoveNext()) {
 			StorageFile^ storage_file = it->Current;
-			struct uap_dirent* file = new uap_dirent();		
+			struct uwp_dirent* file = new uwp_dirent();		
 			file->d_name = storage_file;
 			file->d_type = 0x8000;
 			udir->files[udir->file_ptr++] = file;
@@ -36,7 +36,7 @@ UAP_DIR* uap_opendir(StorageFolder^ folder) {
 }
 
 // free up any memory we allocated
-void uap_closedir(UAP_DIR* dir) {
+void uwp_closedir(UWP_DIR* dir) {
 	for (int i = 0; i < dir->numberOfFiles; i++) {
 		delete dir->files[i]->d_name;
 		delete dir->files[i];
@@ -46,7 +46,7 @@ void uap_closedir(UAP_DIR* dir) {
 }
 
 // return the directory entry pointed at by the file pointer, if there are still files left to be processed
-struct uap_dirent* uap_readdir(UAP_DIR* dir) {
+struct uwp_dirent* uwp_readdir(UWP_DIR* dir) {
 	if (dir->file_ptr < dir->numberOfFiles) {
 		return dir->files[dir->file_ptr++];
 	}
@@ -55,22 +55,22 @@ struct uap_dirent* uap_readdir(UAP_DIR* dir) {
 	}
 }
 
-void uap_chdir(StorageFolder^ dir) {
+void uwp_chdir(StorageFolder^ dir) {
 	// this intentionally does nothing. 
 }
 
 // creates a FILE struct which will be used by the language processor
 // it contains the StorageFile object which is necessary for reading
-UAP_FILE* uap_fopen(StorageFile^ name, char* flags) {
-	UAP_FILE* file = new UAP_FILE();
-	file->uapfile = name;
+UWP_FILE* uwp_fopen(StorageFile^ name, char* flags) {
+	UWP_FILE* file = new UWP_FILE();
+	file->uwpfile = name;
 	file->line_ptr = 0;
 	return file;
 }
 
 // places the next line of the file into the buffer
-int uap_fgets(char* buffer, int bufsize, UAP_FILE* fp) {
-	StorageFile^ uap_file = fp->uapfile;
+int uwp_fgets(char* buffer, int bufsize, UWP_FILE* fp) {
+	StorageFile^ uap_file = fp->uwpfile;
 
 	if (fp->lines == nullptr) {
 		// we haven't read this file yet, so read all lines, place them into a vector, and then store it in the FILE object for later use
@@ -93,11 +93,11 @@ int uap_fgets(char* buffer, int bufsize, UAP_FILE* fp) {
 }
 
 // the FILE object itself is the only unmanaged object that we have to worry about.
-void uap_fclose(UAP_FILE* fp) {
+void uwp_fclose(UWP_FILE* fp) {
 	delete fp;
 }
 
-void uap_display_dialog(char* text) {
+void uwp_display_dialog(char* text) {
 	String^ str = utf8_to_wstr(text);
 	MessageDialog^ msg = ref new MessageDialog(str);
 	msg->ShowAsync();
