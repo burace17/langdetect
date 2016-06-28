@@ -26,10 +26,10 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "WindowsStore")
 	ADD_MSVC_PRECOMPILED_HEADER("${CMAKE_CURRENT_SOURCE_DIR}/include/windows-uwp/pch.h" "${CMAKE_CURRENT_SOURCE_DIR}/src/windows-uwp/pch.cpp" SRC_FILES)
 
 	set (HEADER_FILES include/gui.h include/langdetect.h include/windows-uwp/App.xaml.h 
-		include/windows-uwp/MainPage.xaml.h include/windows-uwp/langdetect-uap.h
+		include/windows-uwp/MainPage.xaml.h include/windows-uwp/langdetect-uwp.h
 		include/windows-uwp/str-utils.h)
 	set (SRC_FILES src/windows-uwp/App.xaml.cpp src/langdetect.c src/gui.c src/windows-uwp/MainPage.xaml.cpp 
-		src/windows-uwp/langdetect-uap.cpp src/windows-uwp/str-utils.cpp
+		src/windows-uwp/langdetect-uwp.cpp src/windows-uwp/str-utils.cpp
 		src/windows-uwp/App.xaml
 		src/windows-uwp/MainPage.xaml)
 
