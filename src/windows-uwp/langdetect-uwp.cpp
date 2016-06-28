@@ -12,7 +12,7 @@ using namespace std;
 UWP_DIR* uwp_opendir(StorageFolder^ folder) {
 	UWP_DIR* udir = new UWP_DIR();
 	udir->file_ptr = 0;
-
+	udir->folder = folder;
 	// ask WinRT to get a vector of all of the files in this folder.
 	// we store this vector in the DIR object. each file will have a corresponding dirent struct.
 	// it stores the StorageFile object for the file, which will allow us to read it. 
@@ -38,7 +38,6 @@ UWP_DIR* uwp_opendir(StorageFolder^ folder) {
 // free up any memory we allocated
 void uwp_closedir(UWP_DIR* dir) {
 	for (int i = 0; i < dir->numberOfFiles; i++) {
-		delete dir->files[i]->d_name;
 		delete dir->files[i];
 	}
 	delete dir->files;

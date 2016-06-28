@@ -50,10 +50,6 @@ void hash_put_kv(LIST_CELL_T** hash_table, KV_PAIR_T* kv) {
 		cell->next = hash_table[index];
 		hash_table[index] = cell;
 	}
-	else {
-		// this key is already in the hash table
-		printf("error: key collision: %s", kv->key);
-	}
 }
 
 // frees all of the objects associated with a given hash table
@@ -100,11 +96,7 @@ KV_PAIR_T* find_word(LIST_CELL_T** hash_table, char* word) {
 
 // adds all of the stop words in the given file to the hash table
 // sets errno if a problem occurs
-#ifdef UWP
-void process_language(LIST_CELL_T** hash_table, StorageFile^ name) {
-#else
-void process_language(LIST_CELL_T** hash_table, char* name) {
-#endif
+void process_language(LIST_CELL_T** hash_table, STOP_FILE name) {
 	FILE* fp;
 	char line[BUFSIZ];
 	char* language;
@@ -114,12 +106,7 @@ void process_language(LIST_CELL_T** hash_table, char* name) {
 	LANG_T* tmp;
 
 	if ((fp = fopen(name, "r")) != NULL) {
-#ifdef UWP
-		language = wstr_to_utf8(name->DisplayName);
-#else
-		// the language name will be everything before the .
-		language = strtok(name, ".");
-#endif
+		language = get_language_name(name);
 
 		// add this language to the language occurance array
 		strncpy(lang.lang_name, language, sizeof(lang.lang_name));
@@ -171,6 +158,8 @@ void process_language(LIST_CELL_T** hash_table, char* name) {
 			}
 
 		}
+
+		free(language);
 	}
 	else {
 		errno = ENOENT;
@@ -224,11 +213,7 @@ void cleanup() {
 	}
 }
 
-#ifdef UWP
-int initialize(StorageFolder^ stop_files_dir) {
-#else
-int initialize(char* stop_files_dir) {
-#endif
+int initialize(STOP_FILES_DIR stop_files_dir) {
 	DIR* stop_files;
 	struct dirent* dir;
 
@@ -246,24 +231,15 @@ int initialize(char* stop_files_dir) {
 	// open the stop files directory and then try to process each file
 	if ((stop_files = opendir(stop_files_dir)) != NULL) {
 		chdir(stop_files_dir);
-
-#ifdef UWP
-		stop_files->folder = stop_files_dir;
-#endif
-
 		while ((dir = readdir(stop_files)) != NULL) {
 			if (dir->d_type == DT_REG) {
 				process_language(word_dictionary, dir->d_name);
 				if (errno == ENOMEM) {
 					// terminate if language processing failed due to lack of memory
-					printf("error: out of memory\n");
+					display_dialog("Out of memory. Please restart application");
 					cleanup();
 					closedir(stop_files);
 					return 1;
-				}
-				else if (errno == ENOENT) {
-					// skip file if we can't open it
-					printf("error: could not open %s, skipping file\n", dir->d_name);
 				}
 			}
 		}

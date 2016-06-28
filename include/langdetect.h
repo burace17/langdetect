@@ -14,6 +14,10 @@
 #ifdef UWP
 #include "langdetect-uwp.h"
 using namespace Windows::Storage;
+typedef StorageFolder^ STOP_FILES_DIR;
+#else
+typedef char* STOP_FILES_DIR;
+typedef char* STOP_FILE;
 #endif
 
 // size of hash table
@@ -49,11 +53,7 @@ typedef struct list_cell {
 	struct list_cell* next;
 } LIST_CELL_T;
 
-#ifdef UWP
-int initialize(StorageFolder^ stop_files_dir);
-#else
-int initialize(char* stop_files_dir);
-#endif
+int initialize(STOP_FILES_DIR stop_files_dir);
 
 void detect_language(char* text);
 void cleanup();

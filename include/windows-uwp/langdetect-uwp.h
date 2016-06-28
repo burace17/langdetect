@@ -28,6 +28,9 @@
 
 using namespace Windows::Storage;
 
+typedef StorageFolder^ STOP_FILES_DIR;
+typedef StorageFile^ STOP_FILE;
+
 typedef struct {
 	int file_ptr;
 	struct uwp_dirent** files;

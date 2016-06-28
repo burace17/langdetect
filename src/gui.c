@@ -47,5 +47,11 @@ void create_window(int argc, char** argv) {
 #endif
 }
 
-
+char* get_language_name(STOP_FILE name) {
+#ifdef UWP
+	return wstr_to_utf8(name->DisplayName);
+#else
+	return strtok(name, ".");
+#endif
+}
 
