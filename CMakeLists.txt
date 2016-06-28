@@ -22,6 +22,7 @@ ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)
 if (${CMAKE_SYSTEM_NAME} MATCHES "WindowsStore")
 	include_directories(./include/windows-uwp)
 	add_definitions (-DUAP -D_CRT_SECURE_NO_WARNINGS)
+	set (UAP 1)
 	ADD_MSVC_PRECOMPILED_HEADER("${CMAKE_CURRENT_SOURCE_DIR}/include/windows-uwp/pch.h" "${CMAKE_CURRENT_SOURCE_DIR}/src/windows-uwp/pch.cpp" SRC_FILES)
 
 	set (HEADER_FILES include/gui.h include/langdetect.h include/windows-uwp/App.xaml.h 
@@ -78,6 +79,7 @@ if (UAP)
 	set_target_properties (langdetect PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
 	set_target_properties (langdetect PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:windows")
 	set_target_properties (langdetect PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:windows")
+	message ("NOTE: You must run 'fix_vs_proj.ps1' in PowerShell in order for the project to compile.")
 endif()
 
 if (APPLE)
