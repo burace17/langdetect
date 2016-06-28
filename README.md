@@ -29,7 +29,7 @@ however, for Mac OS X you must do:
 otherwise, it will use a normal Unix Makefile which doesn't seem to work with the Objective-C code.
 
 Universal Windows Platform
-==================================
+--------------------------------
 
 I just recently added support for UWP in Windows 10. It is still experimental. To build for UWP, use the following command:
 
