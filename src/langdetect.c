@@ -2,7 +2,6 @@
 #include "pch.h"
 using namespace Windows::Storage;
 #endif
-
 #include "langdetect.h"
 
 // this array stores the number of words found for each language we process.

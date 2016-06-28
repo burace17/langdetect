@@ -4,6 +4,7 @@
 //
 
 #pragma once
+
 #include "MainPage.g.h"
 #include "langdetect.h"
 #include "str-utils.h"

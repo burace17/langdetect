@@ -23,18 +23,21 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "WindowsStore")
 	include_directories(./include/windows-uwp)
 	add_definitions (-DUAP -D_CRT_SECURE_NO_WARNINGS)
 	ADD_MSVC_PRECOMPILED_HEADER("${CMAKE_CURRENT_SOURCE_DIR}/include/windows-uwp/pch.h" "${CMAKE_CURRENT_SOURCE_DIR}/src/windows-uwp/pch.cpp" SRC_FILES)
+
 	set (HEADER_FILES include/gui.h include/langdetect.h include/windows-uwp/App.xaml.h 
 		include/windows-uwp/MainPage.xaml.h include/windows-uwp/langdetect-uap.h
 		include/windows-uwp/str-utils.h)
-
 	set (SRC_FILES src/windows-uwp/App.xaml.cpp src/langdetect.c src/gui.c src/windows-uwp/MainPage.xaml.cpp 
 		src/windows-uwp/langdetect-uap.cpp src/windows-uwp/str-utils.cpp
 		src/windows-uwp/App.xaml
 		src/windows-uwp/MainPage.xaml)
 
-	set (CMAKE_CXX_FLAGS "/ZW /EHsc")
+
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /ZW /EHsc")
 	set_source_files_properties(src/langdetect.c PROPERTIES LANGUAGE CXX)
 	set_source_files_properties(src/gui.c PROPERTIES LANGUAGE CXX)
+
+	set_source_files_properties (src/windows-uwp/App.xaml PROPERTIES VS_XAML_TYPE ApplicationDefinition)
 # Win32
 elseif (WIN32)
 	set (HEADER_FILES include/gui.h include/langdetect.h include/windows/windows_gui.h)
@@ -70,6 +73,13 @@ endif()
 include_directories(./include)
 add_executable (langdetect ${OSX_BUNDLE} ${SRC_FILES} ${HEADER_FILES} ${IB_FILES})
 
+if (UAP)
+	set_target_properties (langdetect PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")
+	set_target_properties (langdetect PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:windows")
+	set_target_properties (langdetect PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:windows")
+	set_target_properties (langdetect PROPERTIES LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:windows")
+endif()
+
 if (APPLE)
 	set_source_files_properties (${IB_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 	set_target_properties (langdetect PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/osx/Info.plist)
@@ -86,8 +96,4 @@ endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
 	target_link_libraries(langdetect be)
-endif()
-
-if (NOT APPLE)
-	file (COPY ${DICTIONARIES} DESTINATION .)
 endif()
