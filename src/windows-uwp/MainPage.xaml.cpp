@@ -39,7 +39,11 @@ void langdetect::MainPage::selectStopFilesBtn_Click(Platform::Object^ sender, Wi
 	fp->FileTypeFilter->Append("*");
 	
 	create_task(fp->PickSingleFolderAsync()).then([=](StorageFolder^ folder) {
-		create_task([folder] { initialize(folder); });
+		create_task([folder] { 
+			if (folder != nullptr) {
+				initialize(folder);
+			}
+		});
 	});
 }
 

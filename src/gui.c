@@ -5,12 +5,12 @@ void display_dialog(char* output) {
 	_gtk_display_dialog(output);
 #endif
 
-#if defined(_WIN32) && !defined(UAP)
+#if defined(_WIN32) && !defined(UWP)
 	MessageBox(NULL, output, "Results", MB_ICONINFORMATION);
 #endif
 
-#ifdef UAP
-	uap_display_dialog(output);
+#ifdef UWP
+	uwp_display_dialog(output);
 #endif
 
 #ifdef __APPLE__
@@ -24,7 +24,7 @@ void display_dialog(char* output) {
 
 
 void create_window(int argc, char** argv) {
-#if defined(_WIN32) && !defined(UAP)
+#if defined(_WIN32) && !defined(UWP)
 	win32_create_window();
 #endif
 

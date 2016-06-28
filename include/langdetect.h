@@ -3,7 +3,7 @@
 #include "gui.h"
 #include <stdio.h>
 #include <string.h>
-#ifndef UAP
+#ifndef UWP
 #include <dirent.h>
 #include <unistd.h>
 #endif
@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#ifdef UAP
-#include "langdetect-uap.h"
+#ifdef UWP
+#include "langdetect-uwp.h"
 using namespace Windows::Storage;
 #endif
 
@@ -49,7 +49,7 @@ typedef struct list_cell {
 	struct list_cell* next;
 } LIST_CELL_T;
 
-#ifdef UAP
+#ifdef UWP
 int initialize(StorageFolder^ stop_files_dir);
 #else
 int initialize(char* stop_files_dir);

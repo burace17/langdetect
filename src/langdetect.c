@@ -1,4 +1,4 @@
-#ifdef UAP
+#ifdef UWP
 #include "pch.h"
 using namespace Windows::Storage;
 #endif
@@ -100,7 +100,7 @@ KV_PAIR_T* find_word(LIST_CELL_T** hash_table, char* word) {
 
 // adds all of the stop words in the given file to the hash table
 // sets errno if a problem occurs
-#ifdef UAP
+#ifdef UWP
 void process_language(LIST_CELL_T** hash_table, StorageFile^ name) {
 #else
 void process_language(LIST_CELL_T** hash_table, char* name) {
@@ -114,7 +114,7 @@ void process_language(LIST_CELL_T** hash_table, char* name) {
 	LANG_T* tmp;
 
 	if ((fp = fopen(name, "r")) != NULL) {
-#ifdef UAP
+#ifdef UWP
 		language = wstr_to_utf8(name->DisplayName);
 #else
 		// the language name will be everything before the .
@@ -224,7 +224,7 @@ void cleanup() {
 	}
 }
 
-#ifdef UAP
+#ifdef UWP
 int initialize(StorageFolder^ stop_files_dir) {
 #else
 int initialize(char* stop_files_dir) {
@@ -247,7 +247,7 @@ int initialize(char* stop_files_dir) {
 	if ((stop_files = opendir(stop_files_dir)) != NULL) {
 		chdir(stop_files_dir);
 
-#ifdef UAP
+#ifdef UWP
 		stop_files->folder = stop_files_dir;
 #endif
 
