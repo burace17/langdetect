@@ -16,8 +16,8 @@ void select_button_click(GtkWidget* widget, gpointer data) {
 	dialog = gtk_file_chooser_dialog_new("Open Stop Word Folder",
 																				GTK_WINDOW(window),
 																				GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-																				GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-																				GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+																				"_Cancel", GTK_RESPONSE_CANCEL,
+																				"_Open", GTK_RESPONSE_ACCEPT, NULL);
 
 	if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));

@@ -57,7 +57,12 @@ elseif (APPLE)
 # Linux
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	include (FindPkgConfig)
-	pkg_search_module (GTK REQUIRED gtk+-2.0)
+	pkg_check_modules (GTK3 QUIET gtk+-3.0)
+	if (${GTK3_FOUND}) # use gtk 3 if we can
+		pkg_search_module (GTK REQUIRED gtk+-3.0)
+	else() # or fallback to gtk 2
+		pkg_search_module (GTK REQUIRED gtk+-2.0)
+	endif()
 	add_definitions (-DGTK_UI)
 	include_directories (${GTK_INCLUDE_DIRS})
 	set (HEADER_FILES include/gui.h include/langdetect.h include/gtk/gtk_gui.h)
@@ -93,7 +98,7 @@ elseif (${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
 	set_source_files_properties(src/langdetect.c PROPERTIES LANGUAGE CXX)
 endif()
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	target_link_libraries (langdetect m ${GTK_LDFLAGS})
+	target_link_libraries (langdetect ${GTK_LDFLAGS})
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
