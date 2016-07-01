@@ -55,7 +55,7 @@ char* get_language_name(STOP_FILE name) {
 	char* str = (char*)calloc(strlen(name)+1, sizeof(char));
 	char lang[256];
 	sscanf(name, "%[^.]", lang);
-	strncpy(str, lang, sizeof(str));
+	strncpy(str, lang, strlen(name)+1);
 #endif
 
 	return str;
