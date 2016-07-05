@@ -87,7 +87,7 @@ elseif (APPLE)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Haiku")
 	# This is kind of a hack to fix issues with adding Haiku's C++ headers to our existing C code
 	# Compiling everything as C++ makes things easier. 
-	target_link_libraries (langdetect be)
+	target_link_libraries (langdetect be tracker)
 else()
 	target_link_libraries (langdetect ${GTK_LDFLAGS})
 endif()

@@ -3,7 +3,6 @@ App::App(void) : BApplication("application/x-vnc.dw-langdetect")
 {
 	MainWindow* window = new MainWindow();
 	window->Show();
-	delete window;
 }
 void beos_init() {
 	App* app = new App();
