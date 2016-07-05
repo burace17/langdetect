@@ -3,7 +3,6 @@
 enum {
 	M_BUTTON_CLICKED = 'btcl',
 	M_SELECT_CLICKED = 'btc2',
-	M_OPENED = 'btc3'
 };
 
 MainWindow::MainWindow(void) : BWindow(BRect(100, 100, 480, 350), "Language Detector", B_TITLED_WINDOW,
@@ -36,25 +35,20 @@ void MainWindow::MessageReceived(BMessage* msg) {
 		case M_BUTTON_CLICKED:
 			{
 				buffer = text->Text();
-				tmp = new char[sizeof(buffer)];
-				strncpy(tmp, buffer, sizeof(buffer));
+				tmp = new char[strlen(buffer)+1];
+				strncpy(tmp, buffer, strlen(buffer)+1);
 				detect_language(tmp);
-				text->SetText("");
+				delete tmp;
 				break;
 			}
 		case M_SELECT_CLICKED:
 			{
-				BMessenger messenger(this);
-				this->open = new BFilePanel(B_OPEN_PANEL, &messenger, NULL,
-							B_DIRECTORY_NODE, false, new BMessage(M_OPENED),
+				if (this->open != NULL)
+					delete this->open;
+				this->open = new BFilePanel(B_OPEN_PANEL, NULL, NULL,
+							B_DIRECTORY_NODE, false, NULL,
 							NULL, false, true);
-				this->open->SetTarget(this);
 				this->open->Show();
-				break;
-			}
-		case M_OPENED:
-			{
-				printf("test");
 				break;
 			}
 		default:
@@ -63,44 +57,4 @@ void MainWindow::MessageReceived(BMessage* msg) {
 				break;
 			}
 	}
-}
-
-void MainWindow::RefsReceived(BMessage* msg)
-{
-	printf("ref received\n");
-	switch (msg->what)
-	{
-		case B_REFS_RECEIVED:
-			{
-				OpenStopFilesDir(msg);
-				break;
-			}
-	}
-}
-
-status_t MainWindow::OpenStopFilesDir(BMessage* msg)
-{
-	entry_ref ref;
-	const char* name;
-	BPath path;
-	BEntry entry;
-	status_t err = B_OK;
-
-	printf("in method\n");
-	
-	if (err = msg->FindRef("directory", &ref) != B_OK)
-		return err;
-
-	if (err = msg->FindString("name", &name) != B_OK)
-		return err;
-
-	if (err = entry.SetTo(&ref) != B_OK) 
-		return err;
-
-	entry.GetPath(&path);
-	path.Append(name);
-	
-	printf("%s\n", path.Path());
-
-	return B_OK;
 }

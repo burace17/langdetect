@@ -14,9 +14,9 @@ class MainWindow : public BWindow {
 		~MainWindow();
 		void MessageReceived(BMessage* msg);
 		void RefsReceived(BMessage* msg);
+		status_t OpenStopFilesDir(BMessage* msg);
 	private:
 		BTextView* text;
 		BFilePanel* open;
-		status_t OpenStopFilesDir(BMessage* msg);
 };
 #endif

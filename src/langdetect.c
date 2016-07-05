@@ -223,13 +223,18 @@ int initialize(STOP_FILES_DIR stop_files_dir) {
 
 	// Create language occurance array
 	lang_occurances = (LANG_T*)calloc(LANG_INITIAL_SIZE, sizeof(LANG_T));
-
+	
 	// open the stop files directory and then try to process each file
 	if ((stop_files = opendir(stop_files_dir)) != NULL) {
 		chdir(stop_files_dir);
 		while ((dir = readdir(stop_files)) != NULL) {
 			/*if (dir->d_type == DT_REG) {
 			*/
+				if (strcmp(dir->d_name, ".") == 0)
+					continue;
+				if (strcmp(dir->d_name, "..") == 0)
+					continue;
+
 				// get the language name from whatever object we are dealing with. char* or StorageFile^?
 				language_name = get_language_name(dir->d_name);
 
