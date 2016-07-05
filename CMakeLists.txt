@@ -25,7 +25,9 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "WindowsStore")
 	add_definitions (-DUWP -D_CRT_SECURE_NO_WARNINGS)
 	set (UWP 1)
 	ADD_MSVC_PRECOMPILED_HEADER ("${CMAKE_CURRENT_SOURCE_DIR}/include/windows-uwp/pch.h" "${CMAKE_CURRENT_SOURCE_DIR}/src/windows-uwp/pch.cpp" SRC_FILES)
-
+	set (HEADER_FILES include/gui.h include/langdetect.h include/windows-uwp/App.xaml.h 		
+ 		include/windows-uwp/MainPage.xaml.h include/windows-uwp/langdetect-uwp.h		
+ 		include/windows-uwp/str-utils.h)
 	set (SRC_FILES src/windows-uwp/App.xaml.cpp src/langdetect.c src/gui.c src/windows-uwp/MainPage.xaml.cpp 
 		src/windows-uwp/langdetect-uwp.cpp src/windows-uwp/str-utils.cpp
 		src/windows-uwp/App.xaml
@@ -73,7 +75,7 @@ else()
 endif()
 
 include_directories(./include)
-add_executable (langdetect ${OSX_BUNDLE} ${SRC_FILES} ${IB_FILES})
+add_executable (langdetect ${OSX_BUNDLE} ${HEADER_FILES} ${SRC_FILES} ${IB_FILES})
 
 if (UWP)
 	set_target_properties (langdetect PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:windows")
