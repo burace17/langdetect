@@ -41,6 +41,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "WindowsStore")
 # Win32
 elseif (WIN32)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/windows/windows_gui.c)
+	include_directories (./include/windows)
 
 # OS X
 elseif (APPLE)
