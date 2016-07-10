@@ -230,11 +230,12 @@ int initialize(STOP_FILES_DIR stop_files_dir) {
 		while ((dir = readdir(stop_files)) != NULL) {
 			/*if (dir->d_type == DT_REG) {
 			*/
+#ifndef UWP
 				if (strcmp(dir->d_name, ".") == 0)
 					continue;
 				if (strcmp(dir->d_name, "..") == 0)
 					continue;
-
+#endif
 				// get the language name from whatever object we are dealing with. char* or StorageFile^?
 				language_name = get_language_name(dir->d_name);
 
