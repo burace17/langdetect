@@ -1,0 +1,18 @@
+[
+	{
+		"os" : "Linux",
+		"build" : ["mkdir build && cd build && cmake .. && cmake --build ."]
+	},
+	{
+		"os" : "Windows",
+		"build" : ["mkdir build", "cd build", "cmake ..", "cmake --build ."]
+	},
+	{
+		"os" : "Windows",
+		"build" : ["mkdir build", "cd build", "cmake -G \"Visual Studio 14 2015\" -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=10.0", "cmake --build ."]
+	},
+	{
+		"os": "OS X",
+		"build" : ["mkdir build && cd build && cmake -G \"Xcode\" && cmake --build ."]
+	}
+]
