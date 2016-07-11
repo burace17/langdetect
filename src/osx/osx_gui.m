@@ -17,8 +17,6 @@
     if ([selectDlg runModalForDirectory:nil file:nil] == NSOKButton) {
         initialize([[[selectDlg filenames] objectAtIndex:0] UTF8String]);
     }
-
-		[selectDlg release];
 }
 
 @end

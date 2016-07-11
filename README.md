@@ -12,6 +12,13 @@ operating systems from a single codebase. It can even run as a Universal Windows
 It uses CMake to generate the build files. This works well on any platform that CMake is supported on. For Unix-like
 operating systems apart from OS X, GTK+ 3 and pkg-config are required. GTK+ 2 can be used as fallback if GTK+ 3 is not present. I may add Qt support in the future. 
 
+Screenshots
+---------------
+![linux-screenshot](http://i.imgur.com/0c0y3py.png)
+![win32-screenshot](http://i.imgur.com/FiHzkLu.png)
+![uwp-screenshot](http://i.imgur.com/1sKwV41.png)
+![haiku-screenshot](http://i.imgur.com/R6pKzh5.png)
+
 How to build
 ------------
 from the root of the repository:
@@ -40,4 +47,6 @@ After running this command, you MUST run the included PowerShell script or the a
 I recommend you open the generated Visual Studio solution and build and deploy the application from there. Debugging does not work from Visual Studio yet. I'm working on improving the user interface (mainly correcting the scaling).
 
 I have documented how UWP support was implemented in the doc folder.  
+
+
 
