@@ -3,21 +3,13 @@
 #include "gui.h"
 #include <stdio.h>
 #include <string.h>
-#ifndef UWP
-#include <dirent.h>
-#include <unistd.h>
-#endif
-
 #include <stdlib.h>
 #include <errno.h>
 
-#ifdef UWP
-#include "langdetect-uwp.h"
-using namespace Windows::Storage;
-typedef StorageFolder^ STOP_FILES_DIR;
-#else
-typedef char* STOP_FILES_DIR;
-typedef char* STOP_FILE;
+#ifndef UWP
+// These obviously won't work on UWP
+#include <dirent.h>
+#include <unistd.h>
 #endif
 
 // size of hash table
@@ -26,6 +18,17 @@ typedef char* STOP_FILE;
 // initial size of the language occurance array
 #define LANG_INITIAL_SIZE 50
 
+// Below we either define StorageFolder^ or char* to be STOP_FILES_DIR
+// This is so we can make our business logic work more seamlessly across 
+// platforms. Everything but UWP will simply be char* 
+#ifdef UWP
+#include "langdetect-uwp.h"
+using namespace Windows::Storage;
+typedef StorageFolder^ STOP_FILES_DIR;
+#else
+typedef char* STOP_FILES_DIR;
+typedef char* STOP_FILE;
+#endif
 
 // used to keep track of the number of words encountered for each language
 typedef struct {

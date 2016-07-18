@@ -1,3 +1,18 @@
+/*
+ * This file contains the "business logic" for this application.
+ * It is designed to have as little platform-specific code as possible.
+ * This file is generally compiled as C, however, on UWP, it is compiled 
+ * as C++ and contains C++ code specifically for that platform.
+ *
+ * Langdetect works by putting all words into a hash table. The key is the word
+ * and the value is a list of the languages that word appears in. When the user requests
+ * the language for a given text, the number of occurances for words in each language is kept
+ * track of and at the end, the language with the most words is assumed to be the language
+ * of the text. 
+ *
+ * The data structures used are documented in langdetect.h
+ */
+
 #ifdef UWP
 #include "pch.h"
 using namespace Windows::Storage;
@@ -105,7 +120,7 @@ void process_language(LIST_CELL_T** hash_table, STOP_FILE file_name, char* langu
 	LANG_T* tmp;
 
 	if ((fp = fopen(file_name, "r")) != NULL) {	
-		// add this language to the language occurance array
+		// Copy the language name into the LANG_T structure for this language
 		strncpy(lang.lang_name, language_name, sizeof(lang.lang_name));
 		lang.occurances = 0;
 
@@ -117,6 +132,7 @@ void process_language(LIST_CELL_T** hash_table, STOP_FILE file_name, char* langu
 				lang_occurances_size *= 2;
 			}
 			else {
+				// We're out of memory.. 
 				fclose(fp);
 				errno = ENOMEM;
 				return;
@@ -147,19 +163,25 @@ void process_language(LIST_CELL_T** hash_table, STOP_FILE file_name, char* langu
 				// this word isn't in the hash table, so we need to allocate some memory for its
 				// KV pair. 
 				kv = (KV_PAIR_T*)calloc(1, sizeof(KV_PAIR_T));
+				
 				// copy the language name to the key 
 				strncpy(kv->key, line, sizeof(kv->key));
+				
 				// value is the linked list of languages
 				kv->value = cell;
+
+				// finally, put this word in the hash table
 				hash_put_kv(hash_table, kv);
 			}
 
 		}
 	}
 	else {
+		// an error occurred while opening the file
 		errno = ENOENT;
 		return;
 	}
+
 	fclose(fp);
 	errno = 0;
 }
@@ -197,6 +219,7 @@ void analyze(LIST_CELL_T** hash_table, char* text) {
 	}
 }
 
+// Cleanup function
 void cleanup() {
 	numberOfLanguages = 0;
 	lang_occurances_size = LANG_INITIAL_SIZE;
@@ -208,6 +231,8 @@ void cleanup() {
 	}
 }
 
+// Initialize the application using the given stop files directory.
+// Add all of the words in each file in this directory to our hash table.
 int initialize(STOP_FILES_DIR stop_files_dir) {
 	DIR* stop_files;
 	struct dirent* dir;
@@ -228,9 +253,8 @@ int initialize(STOP_FILES_DIR stop_files_dir) {
 	if ((stop_files = opendir(stop_files_dir)) != NULL) {
 		chdir(stop_files_dir);
 		while ((dir = readdir(stop_files)) != NULL) {
-			/*if (dir->d_type == DT_REG) {
-			*/
-#ifndef UWP
+#ifndef UWP 
+				// Make sure we don't try to process these special directories 
 				if (strcmp(dir->d_name, ".") == 0)
 					continue;
 				if (strcmp(dir->d_name, "..") == 0)
@@ -252,9 +276,6 @@ int initialize(STOP_FILES_DIR stop_files_dir) {
 					closedir(stop_files);
 					return 1;
 				}
-			/*
-			}
-			*/
 		}
 	}
 	else {
