@@ -20,6 +20,10 @@ void display_dialog(char* output) {
 	beos_display_dialog(output);
 #endif
 
+#ifdef QT_UI
+	qt_display_dialog(output);
+#endif
+
 }
 
 
@@ -43,7 +47,7 @@ void create_window(int argc, char** argv) {
 #endif
 
 #ifdef QT_UI
-	qt_create_window();
+	qt_create_window(argc, argv);
 #endif
 }
 

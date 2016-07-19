@@ -17,6 +17,10 @@
 #include "beos/beos_init.h"
 #endif
 
+#ifdef QT_UI
+#include "qt/qt_init.h"
+#endif
+
 #ifdef UWP
 using namespace Windows::Storage;
 typedef StorageFile^ STOP_FILE;
