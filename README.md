@@ -41,6 +41,14 @@ if you would like to build using Qt, you can do:
 	cmake -DQT_UI=ON ..
 	cmake --build .
 
+using Qt on Windows is a bit more complicated. I ran the following commands in Git bash to make it work:
+
+	mkdir build && cd build
+	CMAKE_PREFIX_PATH=/C/Qt/5.7/msvc2015_64/ cmake -G"Visual Studio 14 2015 Win64" -DQT_UI=ON ..
+	cmake --build .
+
+You will have to replace the prefix path with the location of your Qt installation. If you install a 64 bit version of
+Qt, you will have to build a 64 bit version of langdetect as I did.
 
 Universal Windows Platform
 --------------------------------
