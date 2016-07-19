@@ -5,7 +5,7 @@ void display_dialog(char* output) {
 	_gtk_display_dialog(output);
 #endif
 
-#if defined(_WIN32) && !defined(UWP)
+#if defined(_WIN32) && !defined(UWP) && !defined(QT_UI)
 	MessageBox(NULL, output, "Results", MB_ICONINFORMATION);
 #endif
 
@@ -28,7 +28,7 @@ void display_dialog(char* output) {
 
 
 void create_window(int argc, char** argv) {
-#if defined(_WIN32) && !defined(UWP)
+#if defined(_WIN32) && !defined(UWP) && !defined(QT_UI)
 	win32_create_window();
 #endif
 

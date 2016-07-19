@@ -23,6 +23,10 @@ if (QT_UI)
 	set (CMAKE_AUTOMOC ON)
 	set (CMAKE_INCLUDE_CURRENT_DIR ON)
 	add_definitions (-DQT_UI)
+	if (WIN32)
+		include_directories(./include/windows)
+	endif()
+
 	find_package (Qt5Widgets REQUIRED)
 
 	qt5_wrap_ui (mainwindow qt/mainwindow.ui)
