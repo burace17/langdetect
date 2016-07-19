@@ -10,7 +10,7 @@ by creating a cross platform GUI application that can be built for Windows, Mac 
 operating systems from a single codebase. It can even run as a Universal Windows 10 application with a native XAML-based interface.
 
 It uses CMake to generate the build files. This works well on any platform that CMake is supported on. For Unix-like
-operating systems apart from OS X, GTK+ 3 and pkg-config are required. GTK+ 2 can be used as fallback if GTK+ 3 is not present. I may add Qt support in the future. 
+operating systems apart from OS X, GTK+ 3 and pkg-config are required. GTK+ 2 can be used as fallback if GTK+ 3 is not present. Qt 5 can also be used. It may run on Qt 4 if CMakeLists is modified slightly.  
 
 Screenshots
 ---------------
@@ -34,6 +34,13 @@ however, for Mac OS X you must do:
 	cmake --build .
 
 otherwise, it will use a normal Unix Makefile which doesn't seem to work with the Objective-C code.
+
+if you would like to build using Qt, you can do:
+
+	mkdir build && cd build
+	cmake -DQT_UI=ON ..
+	cmake --build .
+
 
 Universal Windows Platform
 --------------------------------
