@@ -12,6 +12,8 @@ operating systems from a single codebase. It can even run as a Universal Windows
 It uses CMake to generate the build files. This works well on any platform that CMake is supported on. For Unix-like
 operating systems apart from OS X, GTK+ 3 and pkg-config are required. GTK+ 2 can be used as fallback if GTK+ 3 is not present. Qt 5 can also be used. It may run on Qt 4 if CMakeLists is modified slightly.  
 
+You can find binary releases of langdetect [here](http://burace17.net/langdetect). These may not be up to date with the Git version. I mainly have this for older platforms that require fixes that I don't want to commit to Git. I may add instructions for these platforms eventually.
+
 Screenshots
 ---------------
 ![linux-screenshot](http://i.imgur.com/0c0y3py.png)
