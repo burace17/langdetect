@@ -7,7 +7,9 @@ El objectivo para este proyecto es para ganar experiencia con la lengua C y para
 
 El idea para este proyecto originalmente era del subreddit /r/dailyprogrammer. Sin embargo, he creado un programa gráfico que funciona en muchos sistemas diferentes. Puede funcionar en Windows, OS X, Linux, y BeOS/Haiku. 
 
-Para ejecutarse el programa, necesitas tener CMake. También, necesitas tener GTK+ 2 y pkg-config si tienes Linux o otros sistemas Unix (no es necesario para OS X). 
+Para ejecutarse el programa, necesitas tener CMake. Si tienes un sistema Unix, necesitas pkg-config y uno de estos: GTK+ 3, GTK+2, o Qt 5. 
+
+Puedes encontrar versiónes binarias [aquí](http://burace17.net/langdetect). Es posible que estas versíones no sean actualizadas. 
 
 Como ejecutarse
 ==================================================================
