@@ -16,7 +16,7 @@ You can find binary releases of langdetect [here](http://burace17.net/langdetect
 
 Screenshots
 ---------------
-![linux-screenshot](http://i.imgur.com/0c0y3py.png)
+![linux-screenshot](http://i.imgur.com/syTbicB.png)
 ![win32-screenshot](http://i.imgur.com/FiHzkLu.png)
 ![uwp-screenshot](http://i.imgur.com/1sKwV41.png)
 ![osx-screenshot](http://i.imgur.com/GVSX4Jo.png)

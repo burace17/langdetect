@@ -55,7 +55,7 @@ void _gtk_create_window(int argc, char** argv) {
 	gtk_init(&argc, &argv);
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(window), "Language Detection");
+	gtk_window_set_title(GTK_WINDOW(window), "Language Detector");
 	gtk_window_set_default_size(GTK_WINDOW(window), 480, 375);
 	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
 
