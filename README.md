@@ -18,7 +18,7 @@ Screenshots
 ---------------
 ![linux-screenshot](http://i.imgur.com/syTbicB.png)
 ![win32-screenshot](http://i.imgur.com/FiHzkLu.png)
-![uwp-screenshot](http://i.imgur.com/1sKwV41.png)
+![uwp-screenshot](http://i.imgur.com/La8JVj9.png)
 ![osx-screenshot](http://i.imgur.com/GVSX4Jo.png)
 
 ![haiku-screenshot](http://i.imgur.com/R6pKzh5.png)

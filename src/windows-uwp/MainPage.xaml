@@ -8,8 +8,8 @@
     mc:Ignorable="d">
     <Viewbox>
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="563" Width="642">
-            <Button x:Name="selectStopFilesBtn" Content="Select Stop Files Directory" HorizontalAlignment="Left" Margin="235,393,0,0" VerticalAlignment="Top" Click="selectStopFilesBtn_Click"/>
-            <Button x:Name="detectLanguageBtn" Content="Detect Language" HorizontalAlignment="Left" Margin="236,430,0,0" VerticalAlignment="Top" Width="191" Click="detectLanguageBtn_Click"/>
+            <Button x:Name="selectStopFilesBtn" Content="Select Stop Files Directory" HorizontalAlignment="Left" Margin="236,430,0,0" VerticalAlignment="Top" Click="selectStopFilesBtn_Click"/>
+            <Button x:Name="detectLanguageBtn" Content="Detect Language" HorizontalAlignment="Left" Margin="236,393,0,0" VerticalAlignment="Top" Width="191" Click="detectLanguageBtn_Click"/>
             <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="624" Height="378"/>
         </Grid>
     </Viewbox>
