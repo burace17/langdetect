@@ -13,9 +13,14 @@ void display_dialog(char* output) {
 	uwp_display_dialog(output);
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(CARBON_UI)
 	objc_display_dialog(output);
 #endif
+
+#ifdef CARBON_UI
+	carbon_display_dialog(output);
+#endif
+
 #ifdef HAIKU_OS
 	beos_display_dialog(output);
 #endif
@@ -36,12 +41,17 @@ void create_window(int argc, char** argv) {
 	_gtk_create_window(argc, argv);
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(CARBON_UI)
 	// Cocoa must be initialized with the objective c compiler, so we jump to objc code here.
 	// This gets rid of a warning from clang
 	const char* cargv = (const char*)argv;
 	objc_main(argc, &cargv);
 #endif
+
+#ifdef CARBON_UI
+	carbon_create_window(argc, argv);
+#endif
+
 #ifdef HAIKU_OS
 	beos_init();
 #endif

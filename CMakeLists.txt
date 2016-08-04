@@ -59,6 +59,13 @@ elseif (WIN32)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/windows/windows_gui.c)
 	include_directories (./include/windows)
 
+# Mac OS Classic and OS X - Carbon API
+elseif (CARBON_UI)
+	add_definitions(-DCARBON_UI)
+	set (SRC_FILES src/main.c src/gui.c src/langdetect.c src/osx-carbon/carbon_gui.c)
+	set (OSX_BUNDLE MACOSX_BUNDLE)
+	set (IB_FILES osx/main.nib)
+	set (CMAKE_EXE_LINKER_FLAGS "-framework Carbon")
 # OS X
 elseif (APPLE)
 	set (SRC_FILES src/main.c src/langdetect.c src/gui.c src/osx/osx_init.m
