@@ -30,7 +30,7 @@ using namespace Windows::Storage;
 typedef StorageFile^ STOP_FILE;
 #else
 #include <string.h>
-#define STOP_FILE char*
+typedef char* STOP_FILE;
 #endif
 #include "langdetect.h"
 
