@@ -8,9 +8,13 @@
 #include "windows/windows_gui.h"
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(CARBON_UI)
 #include "osx/osx_init.h"
 #include "osx/osx_gui.h"
+#endif
+
+#ifdef CARBON_UI
+#include "osx-carbon/carbon_gui.h"
 #endif
 
 #ifdef HAIKU_OS
@@ -26,7 +30,7 @@ using namespace Windows::Storage;
 typedef StorageFile^ STOP_FILE;
 #else
 #include <string.h>
-typedef char* STOP_FILE;
+#define STOP_FILE char*
 #endif
 #include "langdetect.h"
 
