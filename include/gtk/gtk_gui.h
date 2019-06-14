@@ -4,5 +4,5 @@
 #include "langdetect.h"
 void _gtk_detect_click(GtkWidget* widget, gpointer data);
 void _gtk_create_window(int argc, char* argv[]);
-void _gtk_display_dialog(char output[]);
+void _gtk_display_dialog(const char output[]);
 #endif

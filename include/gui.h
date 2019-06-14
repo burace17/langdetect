@@ -35,6 +35,6 @@ typedef char* STOP_FILE;
 #include "langdetect.h"
 
 void create_window(int argc, char* argv[]);
-void display_dialog(char* dialog);
+void display_dialog(const char* dialog);
 char* get_language_name(STOP_FILE name);
 #endif

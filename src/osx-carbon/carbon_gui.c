@@ -8,7 +8,7 @@ static IBNibRef        sNibRef;
 
 static NavEventUPP navEventHandler;
 
-void carbon_display_dialog(char* output) {
+void carbon_display_dialog(const char* output) {
 	SInt16 out;
 	Str255 pascalOutput;
 	Str255 pascalResults;

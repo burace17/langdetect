@@ -13,5 +13,5 @@ class App : public BApplication {
 };
 
 void beos_init();
-void beos_display_dialog(char* output);
+void beos_display_dialog(const char* output);
 #endif

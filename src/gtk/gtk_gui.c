@@ -3,7 +3,7 @@
 static GtkWidget* window;
 static GtkWidget* input;
 
-void _gtk_display_dialog(char* output) {
+void _gtk_display_dialog(const char* output) {
 	GtkWidget* dialog = gtk_message_dialog_new(GTK_WINDOW(window), GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, output, "Results");
 	gtk_window_set_title(GTK_WINDOW(dialog), "Results");
 	gtk_dialog_run(GTK_DIALOG(dialog));

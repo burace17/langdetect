@@ -41,7 +41,7 @@ void MainWindow::on_btnSelectDirectory_clicked()
 	initialize(path);
 }
 
-void qt_display_dialog(char* output) 
+void qt_display_dialog(const char* output) 
 {
 	QMessageBox msg;
 	QString str = QString::fromUtf8(output);

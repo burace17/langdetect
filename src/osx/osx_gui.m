@@ -21,7 +21,7 @@
 
 @end
 
-void objc_display_dialog(char* output) {
+void objc_display_dialog(const char* output) {
 	NSString *newOutput = [NSString stringWithUTF8String:output];
 	NSAlert *alert = [[NSAlert alloc] init];
 	[alert setMessageText:@"Results"];

@@ -1,6 +1,6 @@
 #include "gui.h"
 
-void display_dialog(char* output) {
+void display_dialog(const char* output) {
 #ifdef GTK_UI
 	_gtk_display_dialog(output);
 #endif

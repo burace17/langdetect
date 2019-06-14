@@ -19,4 +19,4 @@ class MainWindow : public QMainWindow {
 	private:
 		Ui::MainWindow* ui;
 };
-void qt_display_dialog(char* output);
+void qt_display_dialog(const char* output);
