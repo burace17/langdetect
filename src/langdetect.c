@@ -28,7 +28,7 @@ static LIST_CELL_T** word_dictionary;
 
 // slightly modified string hashing function (sdbm) from: 
 // http://www.cse.yorku.ca/~oz/hash.html
-unsigned long hash(char *str) {
+unsigned long hash(char* str) {
 	unsigned long hash = 0;
 	int c;
 	while ((c = *str++))
